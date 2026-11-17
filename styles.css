@@ -1,0 +1,91 @@
+:root {
+  --seb-green: #60cd18;
+  --seb-dark: #0b2e13;
+  --ink: #111;
+  --muted: #5c5c5c;
+  --bg: #ffffff;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+}
+
+.deck { position: relative; width: 100vw; height: 100vh; }
+
+.slide {
+  position: absolute;
+  inset: 0;
+  padding: 6vh 7vw;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+.slide.active { opacity: 1; pointer-events: auto; }
+
+/* Brand mark */
+.brand {
+  font-weight: 800;
+  font-size: clamp(1.4rem, 2.4vw, 2.2rem);
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+
+/* Title slide */
+.slide--title {
+  background:
+    radial-gradient(circle at 100% 100%, var(--seb-green) 0 22vw, transparent 22vw),
+    var(--bg);
+}
+.title-block {
+  margin: auto 0;
+  max-width: 70vw;
+}
+.accent-bar {
+  display: block;
+  width: 6rem;
+  height: 0.6rem;
+  background: var(--seb-green);
+  border-radius: 999px;
+  margin-bottom: 2.5rem;
+}
+.slide--title h1 {
+  font-weight: 800;
+  font-size: clamp(2.5rem, 6.5vw, 6.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+.subtitle {
+  margin-top: 1.5rem;
+  font-size: clamp(1.1rem, 2.2vw, 2rem);
+  color: var(--muted);
+  font-weight: 400;
+}
+.footnote {
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
+  color: var(--muted);
+}
+
+/* Navigation chrome */
+.progress {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  height: 4px; background: rgba(0,0,0,0.06);
+}
+.progress__bar {
+  height: 100%; width: 0;
+  background: var(--seb-green);
+  transition: width 0.3s ease;
+}
+.counter {
+  position: fixed; right: 2vw; top: 3vh;
+  font-size: 0.85rem; color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}

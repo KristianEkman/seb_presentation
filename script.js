@@ -1,0 +1,42 @@
+// Slide navigation: arrow keys, space, PageUp/PageDown, click, swipe, and #<n> in the URL.
+(() => {
+  const slides = Array.from(document.querySelectorAll(".slide"));
+  const bar = document.querySelector(".progress__bar");
+  const counter = document.querySelector(".counter");
+  let current = 0;
+
+  function show(index) {
+    current = Math.max(0, Math.min(slides.length - 1, index));
+    slides.forEach((s, i) => s.classList.toggle("active", i === current));
+    bar.style.width = `${((current + 1) / slides.length) * 100}%`;
+    counter.textContent = `${current + 1} / ${slides.length}`;
+    history.replaceState(null, "", `#${current + 1}`);
+  }
+
+  const next = () => show(current + 1);
+  const prev = () => show(current - 1);
+
+  document.addEventListener("keydown", (e) => {
+    if (["ArrowRight", "ArrowDown", "PageDown", " ", "Enter"].includes(e.key)) { e.preventDefault(); next(); }
+    else if (["ArrowLeft", "ArrowUp", "PageUp", "Backspace"].includes(e.key)) { e.preventDefault(); prev(); }
+    else if (e.key === "Home") show(0);
+    else if (e.key === "End") show(slides.length - 1);
+  });
+
+  document.addEventListener("click", (e) => {
+    if (e.target.closest("a, button, input")) return;
+    e.clientX < window.innerWidth / 3 ? prev() : next();
+  });
+
+  let touchX = null;
+  document.addEventListener("touchstart", (e) => { touchX = e.touches[0].clientX; });
+  document.addEventListener("touchend", (e) => {
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 50) (dx < 0 ? next : prev)();
+    touchX = null;
+  });
+
+  const fromHash = parseInt(location.hash.slice(1), 10);
+  show(Number.isFinite(fromHash) ? fromHash - 1 : 0);
+})();
