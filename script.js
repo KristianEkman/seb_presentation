@@ -5,12 +5,37 @@
   const counter = document.querySelector(".counter");
   let current = 0;
 
+  // Screenshot slideshows: still until clicked, then 3s per image, looping. Click again to stop.
+  const slideshows = Array.from(document.querySelectorAll("[data-slideshow]")).map((el) => {
+    const imgs = Array.from(el.querySelectorAll("img"));
+    let i = 0, timer = null;
+    const go = (n) => {
+      imgs[i].classList.remove("is-current");
+      i = n % imgs.length;
+      imgs[i].classList.add("is-current");
+    };
+    const stop = () => {
+      clearInterval(timer);
+      timer = null;
+      el.classList.remove("is-playing");
+      go(0);
+    };
+    el.addEventListener("click", () => {
+      if (timer) return stop();
+      el.classList.add("is-playing");
+      go(i + 1);
+      timer = setInterval(() => go(i + 1), 3000);
+    });
+    return { el, stop };
+  });
+
   function show(index) {
     current = Math.max(0, Math.min(slides.length - 1, index));
     slides.forEach((s, i) => s.classList.toggle("active", i === current));
     bar.style.width = `${((current + 1) / slides.length) * 100}%`;
     counter.textContent = `${current + 1} / ${slides.length}`;
     history.replaceState(null, "", `#${current + 1}`);
+    slideshows.forEach((ss) => { if (!slides[current].contains(ss.el)) ss.stop(); });
     broadcast();
   }
 
@@ -37,7 +62,7 @@
   });
 
   document.addEventListener("click", (e) => {
-    if (e.target.closest("a, button, input")) return;
+    if (e.target.closest("a, button, input, [data-slideshow]")) return;
     e.clientX < window.innerWidth / 3 ? prev() : next();
   });
 
