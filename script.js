@@ -6,8 +6,11 @@
   let current = 0;
 
   // Screenshot slideshows: still until clicked, then 3s per image, looping. Click again to stop.
+  // Optional data-audio="file" plays (looped) while the slideshow runs.
   const slideshows = Array.from(document.querySelectorAll("[data-slideshow]")).map((el) => {
     const imgs = Array.from(el.querySelectorAll("img"));
+    const audio = el.dataset.audio ? new Audio(el.dataset.audio) : null;
+    if (audio) { audio.loop = true; audio.preload = "auto"; }
     let i = 0, timer = null;
     const go = (n) => {
       imgs[i].classList.remove("is-current");
@@ -18,11 +21,13 @@
       clearInterval(timer);
       timer = null;
       el.classList.remove("is-playing");
+      if (audio) { audio.pause(); audio.currentTime = 0; }
       go(0);
     };
     el.addEventListener("click", () => {
       if (timer) return stop();
       el.classList.add("is-playing");
+      audio?.play().catch(() => {});
       go(i + 1);
       timer = setInterval(() => go(i + 1), 3000);
     });
