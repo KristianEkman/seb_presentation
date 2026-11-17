@@ -57,7 +57,7 @@
         <span class="accent-bar"></span>
         <h2>Chess engines</h2>
         <ul class="points">
-          <li>Goal: get ranked on CCRL at 2000 Elo</li>
+          <li>Goal: get ranked on <a href="https://computerchess.org.uk/" target="_blank" rel="noopener">CCRL</a> at 2000 Elo</li>
           <li>ChessMatrix (by hand): Elo 1863, rank ~700</li>
           <li>ZeroG (with AI, summer 2026): Elo 2666, rank 398</li>
           <li>Every change gated: 400 games vs. previous version</li>
@@ -142,6 +142,45 @@
           <text class="tree__note" x="590" y="392">pruned</text>
           <text class="tree__note tree__note--best" x="420" y="12">best move</text>
         </svg>
+      </div>
+    </section>
+
+    <!-- Slide 7: Pruning and evaluation -->
+    <section class="slide slide--content">
+      <div class="brand">SEB</div>
+      <div class="content-block">
+        <span class="accent-bar"></span>
+        <h2>Smarter search, better evaluation</h2>
+        <ul class="points">
+          <li>Many more pruning techniques beyond alpha&#8209;beta</li>
+          <li><strong>Null move:</strong> pass a turn. Still winning? Skip the line</li>
+          <li><strong>Late move reductions:</strong> search unlikely moves less deeply</li>
+          <li><strong>Futility pruning:</strong> skip quiet moves that can't catch up</li>
+          <li><strong>Evaluation:</strong> today a trained neural network (NNUE)</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Slide 8: Jetpack -->
+    <section class="slide slide--content">
+      <div class="brand">SEB</div>
+      <div class="content-block content-block--split">
+        <div>
+          <span class="accent-bar"></span>
+          <h2>Jetpack</h2>
+          <ul class="points points--small">
+            <li>A simple retro game I like to play myself</li>
+            <li>Antigravity + Gemini, done in under a month</li>
+            <li>Hardest part: making the jetpack turns feel natural</li>
+            <li>Started in JavaScript, later converted to TypeScript</li>
+            <li>Graphics and sound generated from prompts</li>
+            <li>Free to play, ~60 players, <a href="https://github.com/KristianEkman/jetpack" target="_blank" rel="noopener">open source on GitHub</a></li>
+          </ul>
+        </div>
+        <div class="shots">
+          <img class="shots__img shots__img--back" src="images/jetpack-menu.jpg" alt="Jetpack main menu">
+          <img class="shots__img shots__img--front" src="images/jetpack-stage8.jpg" alt="Jetpack gameplay, stage 8">
+        </div>
       </div>
     </section>
 

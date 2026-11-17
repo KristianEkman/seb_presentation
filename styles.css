@@ -215,11 +215,30 @@ html, body {
   display: grid; place-items: center;
   font-size: 9cqw;
   line-height: 1;
-  transition: transform var(--move-ms, 350ms) ease, opacity var(--move-ms, 350ms) ease;
+  transition: transform 450ms ease, opacity 450ms ease;
   z-index: 1;
   user-select: none;
 }
 .board__piece--w { color: #fff; -webkit-text-stroke: 1.5px #111; paint-order: stroke fill; }
 .board__piece--b { color: #111; }
 .board__piece--captured { opacity: 0; z-index: 0; }
-.board--instant .board__piece { transition: none; }
+
+.points a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+/* Jetpack slide: screenshots */
+.points--small { gap: 1.1rem; }
+.points--small li { font-size: clamp(1rem, 1.9vw, 1.8rem); }
+.shots { position: relative; aspect-ratio: 16 / 12; width: 100%; max-height: 72vh; }
+.shots__img {
+  position: absolute;
+  width: 82%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
+}
+.shots__img--back { top: 0; left: 0; }
+.shots__img--front { right: 0; bottom: 0; border: 3px solid var(--seb-green); }
