@@ -11,7 +11,19 @@
     bar.style.width = `${((current + 1) / slides.length) * 100}%`;
     counter.textContent = `${current + 1} / ${slides.length}`;
     history.replaceState(null, "", `#${current + 1}`);
+    broadcast();
   }
+
+  // Presenter view sync (press S to open presenter.html; notes live in notes.json).
+  const channel = new BroadcastChannel("deck");
+  const titles = slides.map((s) => (s.querySelector("h1, h2")?.textContent || "").trim());
+  function broadcast() {
+    channel.postMessage({ type: "state", index: current, total: slides.length, titles });
+  }
+  channel.onmessage = (e) => {
+    if (e.data.type === "hello") broadcast();
+    else if (e.data.type === "go") show(e.data.index);
+  };
 
   const next = () => show(current + 1);
   const prev = () => show(current - 1);
@@ -21,6 +33,7 @@
     else if (["ArrowLeft", "ArrowUp", "PageUp", "Backspace"].includes(e.key)) { e.preventDefault(); prev(); }
     else if (e.key === "Home") show(0);
     else if (e.key === "End") show(slides.length - 1);
+    else if (e.key === "s" || e.key === "S") window.open("presenter.html", "presenter", "width=900,height=600");
   });
 
   document.addEventListener("click", (e) => {
