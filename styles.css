@@ -117,3 +117,109 @@ html, body {
   border-radius: 50%;
   background: var(--seb-green);
 }
+
+/* Split content slide: text left, diagram right */
+.content-block--split {
+  max-width: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: 4vw;
+  align-items: center;
+}
+.content-block--split h2 { margin-bottom: 2.2rem; }
+.points--compact { gap: 1.1rem; counter-reset: step; }
+.points--compact li {
+  font-size: clamp(1rem, 1.9vw, 1.8rem);
+  counter-increment: step;
+}
+.points--compact li::before {
+  content: counter(step);
+  width: 1.6rem; height: 1.6rem; top: 0.05em;
+  font-size: 0.95rem; font-weight: 700;
+  color: var(--seb-dark);
+  display: grid; place-items: center;
+}
+.points--compact li { padding-left: 2.6rem; }
+@media (max-width: 800px) {
+  .content-block--split { grid-template-columns: 1fr; }
+}
+
+/* Search tree diagram */
+.tree { width: 100%; height: auto; max-height: 70vh; font-family: var(--font); }
+.tree__level text { font-size: 18px; fill: var(--muted); dominant-baseline: middle; }
+.tree__edge { stroke: #b5b5b5; stroke-width: 3; }
+.tree__edge--best { stroke: var(--seb-green); stroke-width: 6; }
+.tree__edge--pruned { stroke: #d6d6d6; stroke-dasharray: 8 8; }
+.tree__node circle { fill: var(--bg); stroke: var(--ink); stroke-width: 3; }
+.tree__node text {
+  font-size: 22px; font-weight: 700; fill: var(--ink);
+  text-anchor: middle; dominant-baseline: central;
+}
+.tree__node--best circle { fill: var(--seb-green); stroke: var(--seb-dark); }
+.tree__node--pruned circle { stroke: #cfcfcf; stroke-dasharray: 6 6; }
+.tree__node--pruned text { fill: #b0b0b0; }
+.tree__note { font-size: 17px; fill: var(--muted); text-anchor: middle; font-style: italic; }
+.tree__note--best { fill: var(--seb-dark); font-weight: 700; font-style: normal; }
+
+/* Move generation slide */
+.movegen .lead { font-size: clamp(1rem, 1.7vw, 1.6rem); color: var(--muted); margin-top: -1.2rem; max-width: 32ch; }
+.depth-buttons { display: flex; gap: 0.8rem; margin-top: 2rem; flex-wrap: wrap; }
+.depth-buttons button {
+  font: inherit; font-weight: 700;
+  font-size: clamp(0.9rem, 1.3vw, 1.2rem);
+  padding: 0.55em 1.1em;
+  border-radius: 999px;
+  border: 2px solid var(--seb-dark);
+  background: var(--bg); color: var(--seb-dark);
+  cursor: pointer;
+}
+.depth-buttons button:hover { background: #eef3e6; }
+.depth-buttons button.is-active { background: var(--seb-green); border-color: var(--seb-green); }
+.node-count {
+  margin-top: 1.6rem;
+  font-size: clamp(1.4rem, 2.8vw, 2.6rem);
+  font-weight: 800; color: var(--seb-dark);
+  font-variant-numeric: tabular-nums;
+}
+.growth {
+  margin-top: 1.4rem;
+  border-collapse: collapse;
+  font-size: clamp(0.9rem, 1.3vw, 1.25rem);
+  font-variant-numeric: tabular-nums;
+}
+.growth th, .growth td { padding: 0.25em 1.2em 0.25em 0; text-align: right; }
+.growth th:first-child, .growth td:first-child { text-align: left; }
+.growth th { color: var(--muted); font-weight: 600; border-bottom: 2px solid #ddd; }
+.growth tr.is-active td { color: var(--seb-dark); font-weight: 800; }
+.growth tr.is-active td:first-child { box-shadow: inset 4px 0 0 var(--seb-green); padding-left: 0.6em; }
+
+.board {
+  position: relative;
+  width: min(70vh, 42vw);
+  aspect-ratio: 1;
+  justify-self: center;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  container-type: size;
+}
+.board__sq--light { background: #eef3e6; }
+.board__sq--dark { background: #7fae5c; }
+.board__sq--hl { box-shadow: inset 0 0 0 100vmax rgba(255, 220, 60, 0.45); }
+.board__piece {
+  position: absolute; top: 0; left: 0;
+  width: 12.5%; height: 12.5%;
+  display: grid; place-items: center;
+  font-size: 9cqw;
+  line-height: 1;
+  transition: transform var(--move-ms, 350ms) ease, opacity var(--move-ms, 350ms) ease;
+  z-index: 1;
+  user-select: none;
+}
+.board__piece--w { color: #fff; -webkit-text-stroke: 1.5px #111; paint-order: stroke fill; }
+.board__piece--b { color: #111; }
+.board__piece--captured { opacity: 0; z-index: 0; }
+.board--instant .board__piece { transition: none; }

@@ -65,11 +65,92 @@
       </div>
     </section>
 
+    <!-- Slide 5: Move generation -->
+    <section class="slide slide--content">
+      <div class="brand">SEB</div>
+      <div class="content-block content-block--split">
+        <div class="movegen" data-movegen>
+          <span class="accent-bar"></span>
+          <h2>Move generation</h2>
+          <p class="lead">Every move opens a new position. Each of those has its own moves.</p>
+          <div class="depth-buttons" role="group" aria-label="Search depth">
+            <button type="button" data-depth="1">Depth 1</button>
+            <button type="button" data-depth="2">Depth 2</button>
+            <button type="button" data-depth="3">Depth 3</button>
+          </div>
+          <p class="node-count" aria-live="polite"><span data-count>0</span> positions</p>
+          <table class="growth">
+            <thead><tr><th>Depth</th><th>Positions</th></tr></thead>
+            <tbody>
+              <tr data-row="1"><td>1</td><td>20</td></tr>
+              <tr data-row="2"><td>2</td><td>400</td></tr>
+              <tr data-row="3"><td>3</td><td>8,902</td></tr>
+              <tr><td>4</td><td>197,281</td></tr>
+              <tr><td>5</td><td>4,865,609</td></tr>
+              <tr><td>6</td><td>119,060,324</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="board" data-chessboard></div>
+      </div>
+    </section>
+
+    <!-- Slide 6: Search and pruning -->
+    <section class="slide slide--content">
+      <div class="brand">SEB</div>
+      <div class="content-block content-block--split">
+        <div>
+          <span class="accent-bar"></span>
+          <h2>Search and pruning</h2>
+          <ol class="points points--compact">
+            <li><strong>Search</strong> ahead, assuming best play (minimax)</li>
+            <li><strong>Prune</strong> lines that can't matter (alpha&#8209;beta)</li>
+            <li><strong>Evaluate</strong> the end positions</li>
+          </ol>
+        </div>
+        <svg class="tree" viewBox="0 0 700 400" role="img"
+             aria-label="Search tree: my two moves, each with three opponent replies. Left move scores 3. Right move: first reply scores 2, so its other replies are pruned. Best move is the left one, worth 3.">
+          <!-- Level labels -->
+          <g class="tree__level">
+            <text x="0" y="56">Me: max</text>
+            <text x="0" y="196">Opponent: min</text>
+            <text x="0" y="336">Evaluate</text>
+          </g>
+
+          <!-- Edges -->
+          <line class="tree__edge tree__edge--best" x1="420" y1="50" x2="290" y2="190"/>
+          <line class="tree__edge" x1="420" y1="50" x2="550" y2="190"/>
+          <line class="tree__edge tree__edge--best" x1="290" y1="190" x2="210" y2="330"/>
+          <line class="tree__edge" x1="290" y1="190" x2="290" y2="330"/>
+          <line class="tree__edge" x1="290" y1="190" x2="370" y2="330"/>
+          <line class="tree__edge" x1="550" y1="190" x2="470" y2="330"/>
+          <line class="tree__edge tree__edge--pruned" x1="550" y1="190" x2="550" y2="330"/>
+          <line class="tree__edge tree__edge--pruned" x1="550" y1="190" x2="630" y2="330"/>
+
+          <!-- Nodes -->
+          <g class="tree__node tree__node--best"><circle cx="420" cy="50" r="28"/><text x="420" y="50">3</text></g>
+          <g class="tree__node tree__node--best"><circle cx="290" cy="190" r="28"/><text x="290" y="190">3</text></g>
+          <g class="tree__node"><circle cx="550" cy="190" r="28"/><text x="550" y="190">≤2</text></g>
+          <g class="tree__node tree__node--best"><circle cx="210" cy="330" r="28"/><text x="210" y="330">3</text></g>
+          <g class="tree__node"><circle cx="290" cy="330" r="28"/><text x="290" y="330">12</text></g>
+          <g class="tree__node"><circle cx="370" cy="330" r="28"/><text x="370" y="330">8</text></g>
+          <g class="tree__node"><circle cx="470" cy="330" r="28"/><text x="470" y="330">2</text></g>
+          <g class="tree__node tree__node--pruned"><circle cx="550" cy="330" r="28"/><text x="550" y="330">?</text></g>
+          <g class="tree__node tree__node--pruned"><circle cx="630" cy="330" r="28"/><text x="630" y="330">?</text></g>
+
+          <!-- Annotations -->
+          <text class="tree__note" x="590" y="392">pruned</text>
+          <text class="tree__note tree__note--best" x="420" y="12">best move</text>
+        </svg>
+      </div>
+    </section>
+
   </main>
 
   <div class="progress"><div class="progress__bar"></div></div>
   <div class="counter"></div>
 
   <script src="script.js"></script>
+  <script src="chessboard.js"></script>
 </body>
 </html>
