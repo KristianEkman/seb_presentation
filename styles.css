@@ -206,14 +206,14 @@ html, body {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   container-type: size;
 }
-.board__sq--light { background: #eef3e6; }
+.board__sq--light { background: #c5d6ae; }
 .board__sq--dark { background: #7fae5c; }
 .board__sq--hl { box-shadow: inset 0 0 0 100vmax rgba(255, 220, 60, 0.45); }
 .board__piece {
   position: absolute; top: 0; left: 0;
   width: 12.5%; height: 12.5%;
   display: grid; place-items: center;
-  font-size: 9cqw;
+  font-size: 11.5cqw;
   line-height: 1;
   transition: transform 450ms ease, opacity 450ms ease;
   z-index: 1;
