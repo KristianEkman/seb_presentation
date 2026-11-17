@@ -89,3 +89,31 @@ html, body {
   font-size: 0.85rem; color: var(--muted);
   font-variant-numeric: tabular-nums;
 }
+
+/* Content slide */
+.slide--content {
+  background:
+    linear-gradient(var(--seb-green), var(--seb-green)) left top / 0.6vw 100% no-repeat,
+    var(--bg);
+}
+.content-block { margin: auto 0; max-width: 75vw; }
+.slide--content h2 {
+  font-weight: 800;
+  font-size: clamp(2rem, 5vw, 4.8rem);
+  letter-spacing: -0.02em;
+  margin-bottom: 3rem;
+}
+.points { list-style: none; display: grid; gap: 1.8rem; }
+.points li {
+  position: relative;
+  padding-left: 2.4rem;
+  font-size: clamp(1.2rem, 2.6vw, 2.4rem);
+  line-height: 1.25;
+}
+.points li::before {
+  content: "";
+  position: absolute; left: 0; top: 0.4em;
+  width: 0.9rem; height: 0.9rem;
+  border-radius: 50%;
+  background: var(--seb-green);
+}
