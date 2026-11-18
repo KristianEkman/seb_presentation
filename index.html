@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Lessons learned when building with AI for fun</title>
-  <link rel="stylesheet" href="styles.css?v=5">
+  <link rel="stylesheet" href="styles.css?v=6">
 </head>
 <body>
   <main class="deck">
@@ -251,6 +251,82 @@
           <li>AI is great at refactoring: fast, good changes, nothing breaks</li>
           <li>It set up its own code coverage, then used it to write missing tests</li>
         </ul>
+      </div>
+    </section>
+
+    <!-- Slide 13: Terminal Depth intro + gameplay video -->
+    <section class="slide slide--content">
+      <div class="brand">SEB</div>
+      <div class="content-block content-block--split content-block--media">
+        <div>
+          <span class="accent-bar"></span>
+          <h2>Terminal Depth</h2>
+          <ul class="points points--small">
+            <li>The dream project. Jetpack was just a first test</li>
+            <li>Can I rebuild a 90s game I loved, in a modern way?</li>
+            <li>3D first-person, six degrees of freedom</li>
+            <li>New ground: 3D modelling and a real game engine</li>
+            <li>Online multiplayer combat</li>
+          </ul>
+        </div>
+        <!-- Drop the gameplay video at video/terminal-depth.mp4. Click to play/pause. -->
+        <div class="shots video" data-video title="Click to play">
+          <div class="video__placeholder" aria-hidden="true">Gameplay video</div>
+          <video class="video__el" src="video/terminal-depth.mp4" preload="metadata" playsinline></video>
+          <span class="shots__play" aria-hidden="true"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 14: Terminal Depth: concept art to 3D model -->
+    <section class="slide slide--content">
+      <div class="brand">SEB</div>
+      <div class="content-block">
+        <span class="accent-bar"></span>
+        <h2>From concept art to 3D model</h2>
+        <ul class="points points--fit">
+          <li><strong>ChatGPT:</strong> concept art for enemies, the ship, weapons, items</li>
+          <li><strong>Meshy.ai:</strong> turns each image into a 3D model</li>
+          <li><strong>Gemini, later Claude:</strong> imports the models into the game</li>
+          <li><strong>Blender:</strong> small manual fixes, fewer polygons for speed</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Slide 15: Terminal Depth: sound, music and engine -->
+    <section class="slide slide--content">
+      <div class="brand">SEB</div>
+      <div class="content-block">
+        <span class="accent-bar"></span>
+        <h2>Music, sound and engine</h2>
+        <ul class="points points--fit">
+          <li><strong>Music:</strong> Gemini chat with its music plugin</li>
+          <li><strong>Sound effects:</strong> ElevenLabs</li>
+          <li><strong>Engine:</strong> Godot, with C# for the game logic</li>
+          <li>Unlike Jetpack: many specialised AI tools, each for its own job</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Slide 16: Terminal Depth in numbers -->
+    <section class="slide slide--content">
+      <div class="brand">SEB</div>
+      <div class="content-block">
+        <span class="accent-bar"></span>
+        <h2>Terminal Depth in numbers</h2>
+        <p class="lead lead--stats">First commit 11 September, two months ago</p>
+        <table class="stats">
+          <thead><tr><th>Category</th><th>Lines</th></tr></thead>
+          <tbody>
+            <tr><td>C# game code</td><td>54,509</td></tr>
+            <tr><td>C# tests</td><td>20,930</td></tr>
+            <tr><td>Python (3D/texture pipeline, tools)</td><td>20,839</td></tr>
+            <tr><td>GDScript (headless checks, render scripts)</td><td>17,795</td></tr>
+            <tr><td>Shaders</td><td>1,141</td></tr>
+            <tr><td>Shell scripts</td><td>88</td></tr>
+          </tbody>
+          <tfoot><tr><td>Total</td><td>≈115,300</td></tr></tfoot>
+        </table>
       </div>
     </section>
 

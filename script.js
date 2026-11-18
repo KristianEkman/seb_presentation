@@ -34,6 +34,18 @@
     return { el, stop };
   });
 
+  // Gameplay videos: click to play/pause, paused and rewound when leaving the slide.
+  const videos = Array.from(document.querySelectorAll("[data-video]")).map((el) => {
+    const v = el.querySelector("video");
+    const stop = () => { v.pause(); v.currentTime = 0; el.classList.remove("is-playing"); };
+    el.addEventListener("click", () => {
+      if (v.paused) { v.play().then(() => el.classList.add("is-playing")).catch(() => {}); }
+      else { v.pause(); el.classList.remove("is-playing"); }
+    });
+    v.addEventListener("ended", () => el.classList.remove("is-playing"));
+    return { el, stop };
+  });
+
   function show(index) {
     current = Math.max(0, Math.min(slides.length - 1, index));
     slides.forEach((s, i) => s.classList.toggle("active", i === current));
@@ -41,6 +53,7 @@
     counter.textContent = `${current + 1} / ${slides.length}`;
     history.replaceState(null, "", `#${current + 1}`);
     slideshows.forEach((ss) => { if (!slides[current].contains(ss.el)) ss.stop(); });
+    videos.forEach((vd) => { if (!slides[current].contains(vd.el)) vd.stop(); });
     broadcast();
   }
 
@@ -67,7 +80,7 @@
   });
 
   document.addEventListener("click", (e) => {
-    if (e.target.closest("a, button, input, [data-slideshow]")) return;
+    if (e.target.closest("a, button, input, [data-slideshow], [data-video]")) return;
     e.clientX < window.innerWidth / 3 ? prev() : next();
   });
 
