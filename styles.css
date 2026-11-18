@@ -283,3 +283,4 @@ html, body {
   width: clamp(224px, 25.6vw, 416px);
   height: auto;
 }
+.doodle--top { top: 16px; bottom: auto; }
