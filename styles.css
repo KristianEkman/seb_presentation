@@ -293,8 +293,8 @@ html, body {
   margin-right: -4vw;
 }
 
-/* Terminal Depth: gameplay video (video/terminal-depth.mp4), click to play/pause */
-.video { cursor: pointer; aspect-ratio: 16 / 9; }
+/* Terminal Depth: gameplay video (video/TerminalDepth_demo_seb.mp4), click to play/pause */
+.video { cursor: pointer; aspect-ratio: 4 / 3; }
 .video__placeholder {
   position: absolute; inset: 0;
   display: grid; place-items: center;

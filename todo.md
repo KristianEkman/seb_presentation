@@ -4,7 +4,7 @@
 - [ ] Write about vibe coding for banking apps: you need to read the code and understand it. Don't code too fast.
 - [ ] Write about how prompt reply time increased a lot after a while for Terminal Depth, but switching to Claude Code was a big improvement
 
-- [ ] Make a video of Terminal Depth Gameplay
+- [x] Make a video of Terminal Depth Gameplay
 
 write about skript and rules.
 
