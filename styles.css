@@ -230,8 +230,8 @@ html, body {
 }
 
 /* Jetpack slide: screenshots */
-.points--small { gap: 1.1rem; }
-.points--small li { font-size: clamp(1rem, 1.9vw, 1.8rem); }
+.points--small { gap: 0.9rem; }
+.points--small li { font-size: clamp(0.9rem, 1.6vw, 1.5rem); }
 .shots {
   position: relative;
   width: 100%;
@@ -284,3 +284,11 @@ html, body {
   height: auto;
 }
 .doodle--top { top: 16px; bottom: auto; }
+.points--fit { gap: 1.4rem; }
+.points--fit li { font-size: clamp(1.1rem, 2.1vw, 2rem); }
+/* Jetpack slide: give the screenshots more room, using part of the right padding */
+.content-block--media {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 3vw;
+  margin-right: -4vw;
+}
