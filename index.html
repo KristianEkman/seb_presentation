@@ -306,6 +306,7 @@
           <li>Unlike Jetpack: many specialised AI tools, each for its own job</li>
         </ul>
       </div>
+      <img class="doodle" src="images/slide15-doodle.webp" alt="" aria-hidden="true" style="position:absolute; right:16px; bottom:16px; width:clamp(224px, 25.6vw, 416px); height:auto;">
     </section>
 
     <!-- Slide 16: Terminal Depth in numbers -->
@@ -315,6 +316,7 @@
         <span class="accent-bar"></span>
         <h2>Terminal Depth in numbers</h2>
         <p class="lead lead--stats">First commit 11 September, two months ago</p>
+        <div class="stats-row">
         <table class="stats">
           <thead><tr><th>Category</th><th>Lines</th></tr></thead>
           <tbody>
@@ -327,6 +329,39 @@
           </tbody>
           <tfoot><tr><td>Total</td><td>≈115,300</td></tr></tfoot>
         </table>
+        <table class="stats">
+          <thead><tr><th>Category</th><th>Count</th></tr></thead>
+          <tbody>
+            <tr><td>Scenes</td><td>97</td></tr>
+            <tr><td>Sound effects</td><td>78</td></tr>
+            <tr><td>3D models</td><td>70</td></tr>
+            <tr><td>Textures</td><td>47</td></tr>
+            <tr><td>Story voice lines</td><td>15</td></tr>
+            <tr><td>Enemy types</td><td>11</td></tr>
+            <tr><td>Rooms / chambers</td><td>7</td></tr>
+            <tr><td>Music tracks</td><td>6</td></tr>
+            <tr><td>Corridors / tunnels</td><td>5</td></tr>
+            <tr><td>Playable levels</td><td>4</td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 17: Terminal Depth: rules, skills and tech debt -->
+    <section class="slide slide--content">
+      <div class="brand">SEB</div>
+      <div class="content-block">
+        <span class="accent-bar"></span>
+        <h2>Rules, skills and tech debt</h2>
+        <ul class="points points--fit">
+          <li><strong>AGENTS.md:</strong> one set of project rules for every AI agent</li>
+          <li><strong>Rules:</strong> 12 files, loaded only when the AI works in that area</li>
+          <li><strong>Skills:</strong> mostly Python scripts the AI built and saved, reused for similar complex work, e.g. the 3D pipeline, level assembly</li>
+          <li><strong>My own rules:</strong> propose new skills, point out tech debt, never commit, allow no warnings</li>
+          <li>All other rules and skills: written by the AI, reviewed and accepted by me</li>
+          <li><strong>Tech debt:</strong> the AI reports it, but doesn't fix it unasked</li>
+        </ul>
       </div>
     </section>
 

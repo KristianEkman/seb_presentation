@@ -323,3 +323,7 @@ html, body {
 .stats th:last-child, .stats td:last-child { text-align: right; padding-right: 0; }
 .stats th { color: var(--muted); font-weight: 600; border-bottom: 2px solid #ddd; }
 .stats tfoot td { font-weight: 800; color: var(--seb-dark); border-top: 2px solid var(--seb-green); }
+.stats-row { display: flex; align-items: flex-start; gap: clamp(2rem, 5vw, 6rem); }
+.stats-row .stats { font-size: clamp(0.85rem, 1.45vw, 1.4rem); }
+.stats-row .stats th, .stats-row .stats td { padding: 0.25em 1.8em 0.25em 0; }
+.stats-row .stats th:last-child, .stats-row .stats td:last-child { padding-right: 0; }
