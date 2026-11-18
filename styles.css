@@ -274,3 +274,12 @@ html, body {
 }
 .shots:hover .shots__play { opacity: 1; }
 .shots.is-playing .shots__play { opacity: 0; }
+
+/* Small decorative doodle, bottom right */
+.doodle {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  width: clamp(224px, 25.6vw, 416px);
+  height: auto;
+}
