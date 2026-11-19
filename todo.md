@@ -1,9 +1,13 @@
 # TODO
-- [ ] Change tone of the the presentation as advice and instructions instead of what I did.
-- [ ] Mention cost in the presentation
+
+- [ ] Make the speaker notes editable so i easily can change the source when running server locally.
+
 - [ ] Write about vibe coding for banking apps: you need to read the code and understand it. Don't code too fast.
+disclaimer that these methods does not produce bug free code. I dont think we should have the speed when we develop for a banks app.
+
+- [ ] Mention cost in the presentation
+
 - [ ] Write about how prompt reply time increased a lot after a while for Terminal Depth, but switching to Claude Code was a big improvement
-- [x] Make a video of Terminal Depth Gameplay
 
 - [ ] Summary at the end, what I learned.
 
