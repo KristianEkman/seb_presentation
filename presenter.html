@@ -12,8 +12,14 @@
     header { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px solid var(--seb-green); padding-bottom: 12px; }
     #slide { font-size: 1.4rem; font-weight: 600; }
     #timer { font-size: 2rem; font-variant-numeric: tabular-nums; cursor: pointer; }
-    #notes { font-size: 1.15rem; line-height: 1.5; overflow-y: auto; white-space: pre-wrap; }
-    #notes.empty { color: var(--muted); font-style: italic; }
+    #notes { font: inherit; font-size: 1.15rem; line-height: 1.5; color: var(--ink); background: transparent;
+             border: 1px solid transparent; border-radius: 6px; padding: 8px; margin: -8px; resize: none; outline: none; }
+    #notes:hover { border-color: #2a2a2a; }
+    #notes:focus { border-color: #333; background: #161616; }
+    #notes::placeholder { color: var(--muted); font-style: italic; }
+    #status { color: var(--muted); font-size: 0.95rem; }
+    #status.error { color: #ff6b6b; }
+    footer { display: flex; justify-content: space-between; gap: 16px; }
     footer { color: var(--muted); font-size: 1.1rem; }
     footer b { color: var(--ink); }
   </style>
@@ -23,8 +29,11 @@
     <div id="slide">Slide –</div>
     <div id="timer" title="Click to reset">00:00</div>
   </header>
-  <div id="notes"></div>
-  <footer>Next: <b id="next">–</b> &nbsp;·&nbsp; ←/→ to navigate</footer>
+  <textarea id="notes" spellcheck="false" placeholder="No notes for this slide. Click to write some."></textarea>
+  <footer>
+    <span>Next: <b id="next">–</b> &nbsp;·&nbsp; ←/→ to navigate · click notes to edit, Esc to finish</span>
+    <span id="status"></span>
+  </footer>
 
   <script>
   (() => {
@@ -32,25 +41,74 @@
     let notes = {};
     let state = { index: 0, total: 0, titles: [] };
 
-    fetch("notes.json", { cache: "no-store" })
-      .then((r) => (r.ok ? r.json() : {}))
-      .catch(() => ({}))
-      .then((data) => { notes = data; render(); });
+    const notesEl = document.getElementById("notes");
+    const statusEl = document.getElementById("status");
+    let shownSlide = null;
+    let saveTimer = null;
+    let pending = null; // { slide, text } not yet sent to the server
+
+    function loadNotes() {
+      return fetch("notes.json", { cache: "no-store" })
+        .then((r) => (r.ok ? r.json() : {}))
+        .catch(() => ({}))
+        .then((data) => { notes = data; if (!pending) notesEl.value = notes[String(state.index + 1)] || ""; });
+    }
+    loadNotes();
 
     function render() {
       const n = state.index + 1;
       document.getElementById("slide").textContent = `Slide ${n} / ${state.total} — ${state.titles[state.index] || ""}`;
       document.getElementById("next").textContent = state.titles[state.index + 1] || "End of deck";
-      const el = document.getElementById("notes");
-      const text = notes[String(n)];
-      el.textContent = text || "No notes for this slide.";
-      el.classList.toggle("empty", !text);
+      if (shownSlide !== n) {
+        flush();
+        shownSlide = n;
+        notesEl.value = notes[String(n)] || "";
+        notesEl.scrollTop = 0;
+      }
     }
+
+    // Edits autosave to notes.json through server.py (PUT /notes).
+    function setStatus(text, error = false) {
+      statusEl.textContent = text;
+      statusEl.classList.toggle("error", error);
+    }
+
+    function flush() {
+      clearTimeout(saveTimer);
+      if (!pending) return;
+      const { slide, text } = pending;
+      pending = null;
+      setStatus("Saving…");
+      fetch("notes", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ slide, text }) })
+        .then((r) => {
+          if (!r.ok) throw new Error(r.status === 501 ? "server can't save, start it with ./start.sh" : `HTTP ${r.status}`);
+          setStatus("Saved to notes.json");
+        })
+        .catch((err) => {
+          setStatus(`Not saved: ${err.message}`, true);
+          if (!pending) pending = { slide, text }; // retry on the next edit or blur
+        });
+    }
+
+    notesEl.addEventListener("input", () => {
+      const slide = state.index + 1;
+      const text = notesEl.value;
+      if (text.trim()) notes[String(slide)] = text; else delete notes[String(slide)];
+      pending = { slide, text };
+      setStatus("Editing…");
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(flush, 600);
+    });
+    notesEl.addEventListener("blur", flush);
+    window.addEventListener("beforeunload", flush);
+    // Pick up edits made to notes.json in a text editor when you come back to this window.
+    window.addEventListener("focus", () => { if (document.activeElement !== notesEl) loadNotes(); });
 
     channel.onmessage = (e) => { if (e.data.type === "state") { state = e.data; render(); } };
     channel.postMessage({ type: "hello" });
 
     document.addEventListener("keydown", (e) => {
+      if (e.target === notesEl) { if (e.key === "Escape") notesEl.blur(); return; }
       if (["ArrowRight", "ArrowDown", "PageDown", " ", "Enter"].includes(e.key)) { e.preventDefault(); channel.postMessage({ type: "go", index: state.index + 1 }); }
       else if (["ArrowLeft", "ArrowUp", "PageUp", "Backspace"].includes(e.key)) { e.preventDefault(); channel.postMessage({ type: "go", index: state.index - 1 }); }
     });

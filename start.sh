@@ -11,16 +11,5 @@ done
 URL="http://localhost:$PORT/"
 echo "Serving presentation at $URL (Ctrl+C to stop). Press S in the deck for presenter view."
 ( sleep 1; open "$URL" 2>/dev/null || xdg-open "$URL" 2>/dev/null || true ) &
-# Send Cache-Control: no-cache so the browser always checks for edited files
-# (unchanged ones still come back as a quick 304).
-exec python3 -c '
-import sys
-from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
-
-class NoCacheHandler(SimpleHTTPRequestHandler):
-    def end_headers(self):
-        self.send_header("Cache-Control", "no-cache")
-        super().end_headers()
-
-ThreadingHTTPServer(("", int(sys.argv[1])), NoCacheHandler).serve_forever()
-' "$PORT"
+# server.py serves the folder without caching and lets the presenter view save notes.json.
+exec python3 server.py "$PORT"

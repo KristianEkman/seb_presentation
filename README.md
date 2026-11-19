@@ -27,3 +27,5 @@ This stops every server started from this folder, whatever port it's on.
 Press `S` during the presentation to open the presenter view (notes, next slide, timer).
 Notes live in `notes.json` (git-ignored), keyed by slide number. Copy `notes.example.json` to get started.
 Start with `./start.sh` so the notes file can load over HTTP.
+
+The notes in the presenter view are editable: click them, type, and they autosave to `notes.json` (the status in the bottom right says when it's saved). Press Esc to stop editing and get the arrow keys back for navigation. Saving works through `server.py`, which `./start.sh` runs; a plain `python3 -m http.server` can show notes but not save them.
