@@ -15,7 +15,7 @@
       <div class="title-block">
         <span class="accent-bar"></span>
         <h1>Lessons learned when building with AI for fun</h1>
-        <p class="subtitle">Chess engines, games and what I learned.</p>
+        <p class="subtitle">Chess engines, games and lessons you can use.</p>
       </div>
       <footer class="footnote">Kristian Ekman, 2026-11-20</footer>
     </section>
@@ -25,12 +25,12 @@
       <div class="brand">SEB</div>
       <div class="content-block">
         <span class="accent-bar"></span>
-        <h2>Why these hobby projects?</h2>
+        <h2>Why build a hobby project with AI?</h2>
         <ul class="points">
-          <li>Take back the joy of developing, and build what I never could before</li>
-          <li>Can a real app or game be built with AI?</li>
-          <li>Do larger projects drift: scalability, stability, sloppiness?</li>
-          <li>What level of supervision does the AI need?</li>
+          <li>Take back the joy of developing, and build what you never could before</li>
+          <li>Find out if a real app or game can be built with AI</li>
+          <li>See if larger projects drift: scalability, stability, sloppiness</li>
+          <li>Learn how much supervision the AI needs</li>
           <li>Become a better prompt programmer</li>
         </ul>
       </div>
@@ -42,11 +42,11 @@
       <div class="brand">SEB</div>
       <div class="content-block">
         <span class="accent-bar"></span>
-        <h2>Findings</h2>
+        <h2>Key lessons</h2>
         <ul class="points">
-          <li>AI is better than I thought.</li>
+          <li>AI is better than you think.</li>
           <li>Split tasks into sub-tasks for better results.</li>
-          <li>Guide AI as much as possible, review and test.</li>
+          <li>Guide the AI as much as possible, review and test.</li>
         </ul>
       </div>
       <img class="doodle doodle--top" src="images/slide3-doodle.webp" alt="" aria-hidden="true" style="position:absolute; right:16px; top:16px; width:clamp(224px, 25.6vw, 416px); height:auto;">
@@ -75,10 +75,10 @@
         <span class="accent-bar"></span>
         <h2>Chess engines</h2>
         <ul class="points">
-          <li>Goal: get ranked on <a href="https://computerchess.org.uk/" target="_blank" rel="noopener">CCRL</a> at 2000 Elo</li>
-          <li>ChessMatrix (by hand): Elo 1863, rank ~700</li>
-          <li>ZeroG (with AI, summer 2026): Elo 2666, rank 398</li>
-          <li>Every change gated: 400 games vs. previous version</li>
+          <li>Set a measurable goal, e.g. ranked on <a href="https://computerchess.org.uk/" target="_blank" rel="noopener">CCRL</a> at 2000 Elo</li>
+          <li>Baseline by hand: ChessMatrix, Elo 1863, rank ~700</li>
+          <li>With AI (summer 2026): ZeroG, Elo 2666, rank 398</li>
+          <li>Gate every change: 400 games vs. previous version</li>
         </ul>
       </div>
     </section>
@@ -170,7 +170,7 @@
         <span class="accent-bar"></span>
         <h2>Smarter search, better evaluation</h2>
         <ul class="points">
-          <li>Many more pruning techniques beyond alpha&#8209;beta</li>
+          <li>You need many more pruning techniques beyond alpha&#8209;beta</li>
           <li><strong>Null move:</strong> pass a turn. Still winning? Skip the line</li>
           <li><strong>Late move reductions:</strong> search unlikely moves less deeply</li>
           <li><strong>Futility pruning:</strong> skip quiet moves that can't catch up</li>
@@ -188,10 +188,10 @@
         <h2>Let the AI read the profiler</h2>
         <ul class="points points--fit">
           <li>Speed matters: a faster search sees deeper and plays stronger</li>
-          <li>Asked the AI to set up benchmarks and a profiler (macOS <strong>sample</strong>)</li>
-          <li>One command: run the benchmark, sample where the time goes</li>
-          <li>The AI read the output and found the bottlenecks itself</li>
-          <li>Result: a much faster search, with little effort from me</li>
+          <li>Ask the AI to set up benchmarks and a profiler (macOS <strong>sample</strong>)</li>
+          <li>Make it one command: run the benchmark, sample where the time goes</li>
+          <li>Let the AI read the output and find the bottlenecks itself</li>
+          <li>Result: a much faster search, with little effort from you</li>
         </ul>
       </div>
     </section>
@@ -204,10 +204,10 @@
         <h2>Objective proof, not a feeling</h2>
         <ul class="points">
           <li>Elo comes from games played, not from opinions</li>
-          <li>Every change had to win the 400-game gate, or it was rejected</li>
-          <li>CCRL rates engines independently, against other engines</li>
+          <li>Make every change win a gate (400 games), or reject it</li>
+          <li>Use independent ratings: CCRL plays engines against engines</li>
           <li>Years by hand: 1863 Elo. One summer with AI: 2666 Elo</li>
-          <li>Most AI gains are hard to measure. This one wasn't.</li>
+          <li>Most AI gains are hard to measure. When you can, measure.</li>
         </ul>
       </div>
     </section>
@@ -220,12 +220,12 @@
           <span class="accent-bar"></span>
           <h2>Jetpack</h2>
           <ul class="points points--small">
-            <li>A simple retro game I like to play myself</li>
-            <li>Antigravity + Gemini 3.8, done in under a month</li>
-            <li>Hardest part: making the jetpack turns feel natural</li>
-            <li>Started in JavaScript, later converted to TypeScript</li>
-            <li>Graphics and sound generated from prompts</li>
-            <li>Free to play, ~60 players, <a href="https://github.com/KristianEkman/jetpack" target="_blank" rel="noopener">open source on GitHub</a></li>
+            <li>Start with a simple game you like to play yourself</li>
+            <li>Antigravity + Gemini 3.8: done in under a month</li>
+            <li>Expect the feel to be hardest, e.g. natural jetpack turns</li>
+            <li>Start in JavaScript, let the AI convert to TypeScript later</li>
+            <li>Generate graphics and sound from prompts</li>
+            <li>Share it: free to play, ~60 players, <a href="https://github.com/KristianEkman/jetpack" target="_blank" rel="noopener">open source on GitHub</a></li>
           </ul>
         </div>
         <div class="shots" data-slideshow data-audio="audio/jetpack-level6.mp3" title="Click to play">
@@ -243,13 +243,13 @@
       <div class="brand">SEB</div>
       <div class="content-block">
         <span class="accent-bar"></span>
-        <h2>Takeaways from Jetpack</h2>
+        <h2>Lessons from Jetpack</h2>
         <ul class="points">
           <li>Long bug hunts make the code worse</li>
-          <li>Ask the AI to clean up afterwards</li>
-          <li>Clean code helps AI, just like it helps us</li>
-          <li>AI is great at refactoring: fast, good changes, nothing breaks</li>
-          <li>It set up its own code coverage, then used it to write missing tests</li>
+          <li>After a bug hunt, ask the AI to clean up</li>
+          <li>Keep the code clean: it helps AI, just like it helps us</li>
+          <li>Use AI for refactoring: fast, good changes, nothing breaks</li>
+          <li>Let it set up code coverage, then use it to write missing tests</li>
         </ul>
       </div>
     </section>
@@ -262,10 +262,10 @@
           <span class="accent-bar"></span>
           <h2>Terminal Depth</h2>
           <ul class="points points--small">
-            <li>The dream project. Jetpack was just a first test</li>
-            <li>Can I rebuild a 90s game I loved, in a modern way?</li>
+            <li>Test on a small project first, then go for the dream</li>
+            <li>Can you rebuild a game you loved, in a modern way?</li>
             <li>3D first-person, six degrees of freedom</li>
-            <li>New ground: 3D modelling and a real game engine</li>
+            <li>New ground is fine: 3D modelling and a real game engine</li>
             <li>Online multiplayer combat</li>
           </ul>
         </div>
@@ -285,10 +285,10 @@
         <span class="accent-bar"></span>
         <h2>From concept art to 3D model</h2>
         <ul class="points points--fit">
-          <li><strong>ChatGPT:</strong> concept art for enemies, the ship, weapons, items</li>
-          <li><strong>Meshy.ai:</strong> turns each image into a 3D model</li>
-          <li><strong>Gemini, later Claude:</strong> imports the models into the game</li>
-          <li><strong>Blender:</strong> small manual fixes, fewer polygons for speed</li>
+          <li><strong>ChatGPT:</strong> create concept art for enemies, ship, weapons, items</li>
+          <li><strong>Meshy.ai:</strong> turn each image into a 3D model</li>
+          <li><strong>Gemini or Claude:</strong> import the models into the game</li>
+          <li><strong>Blender:</strong> make small manual fixes, cut polygons for speed</li>
         </ul>
       </div>
     </section>
@@ -300,10 +300,10 @@
         <span class="accent-bar"></span>
         <h2>Music, sound and engine</h2>
         <ul class="points points--fit">
-          <li><strong>Music:</strong> Gemini chat with its music plugin</li>
-          <li><strong>Sound effects:</strong> ElevenLabs</li>
-          <li><strong>Engine:</strong> Godot, with C# for the game logic</li>
-          <li>Unlike Jetpack: many specialised AI tools, each for its own job</li>
+          <li><strong>Music:</strong> try Gemini chat with its music plugin</li>
+          <li><strong>Sound effects:</strong> try ElevenLabs</li>
+          <li><strong>Engine:</strong> e.g. Godot, with C# for the game logic</li>
+          <li>Combine specialised AI tools, each for its own job</li>
         </ul>
       </div>
       <img class="doodle" src="images/slide15-doodle.webp" alt="" aria-hidden="true" style="position:absolute; right:16px; bottom:16px; width:clamp(224px, 25.6vw, 416px); height:auto;">
@@ -315,7 +315,7 @@
       <div class="content-block">
         <span class="accent-bar"></span>
         <h2>Terminal Depth in numbers</h2>
-        <p class="lead lead--stats">First commit 11 September, two months ago</p>
+        <p class="lead lead--stats">What you can build in two months (first commit 11 September)</p>
         <div class="stats-row">
         <table class="stats">
           <thead><tr><th>Category</th><th>Lines</th></tr></thead>
@@ -355,12 +355,12 @@
         <span class="accent-bar"></span>
         <h2>Rules, skills and tech debt</h2>
         <ul class="points points--fit">
-          <li><strong>AGENTS.md:</strong> one set of project rules for every AI agent</li>
-          <li><strong>Rules:</strong> 12 files, loaded only when the AI works in that area</li>
-          <li><strong>Skills:</strong> mostly Python scripts the AI built and saved, reused for similar complex work, e.g. the 3D pipeline, level assembly</li>
-          <li><strong>My own rules:</strong> propose new skills, point out tech debt, never commit, allow no warnings</li>
-          <li>All other rules and skills: written by the AI, reviewed and accepted by me</li>
-          <li><strong>Tech debt:</strong> the AI reports it, but doesn't fix it unasked</li>
+          <li><strong>AGENTS.md:</strong> keep one set of project rules for every AI agent</li>
+          <li><strong>Rules:</strong> split into small files, loaded only for their area (12 here)</li>
+          <li><strong>Skills:</strong> let the AI build and save scripts, then reuse them for similar complex work, e.g. the 3D pipeline, level assembly</li>
+          <li><strong>Your own rules:</strong> propose new skills, point out tech debt, never commit, allow no warnings</li>
+          <li>Let the AI write the other rules and skills; you review and accept</li>
+          <li><strong>Tech debt:</strong> have the AI report it, but not fix it unasked</li>
         </ul>
       </div>
     </section>

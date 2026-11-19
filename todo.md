@@ -3,10 +3,9 @@
 - [ ] Mention cost in the presentation
 - [ ] Write about vibe coding for banking apps: you need to read the code and understand it. Don't code too fast.
 - [ ] Write about how prompt reply time increased a lot after a while for Terminal Depth, but switching to Claude Code was a big improvement
-
 - [x] Make a video of Terminal Depth Gameplay
 
-write about skript and rules.
+- [ ] Summary at the end, what I learned.
 
 2 polls in teams
 I am a developer Yes No

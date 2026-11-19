@@ -1,6 +1,6 @@
 // Move generation demo: from the start position, count every position reached at
-// depth 1, 2 or 3 (perft 20 / 400 / 8,902). Depth 1 shows each of White's moves;
-// deeper runs show a few sample lines at the same calm pace while the counter climbs.
+// depth 1, 2 or 3 (perft 20 / 400 / 8,902). Every move is shown: depth 1 at a calm
+// pace, deeper runs start at that pace and speed up until the whole tree is walked.
 // Castling, en passant and promotion can't occur within 3 plies of the start
 // position, so the generator leaves them out.
 (() => {
@@ -15,7 +15,8 @@
   // Timing (ms). Pieces glide for MOVE_MS; the next step waits for the delays below.
   const MOVE_MS = 450;
   const DELAY = { make: 750, unmake: 500, pause: 700 };
-  const COUNT_UP_MS = { 2: 10000, 3: 13000 }; // how long the counter takes to reach the total
+  const RUN_MS = { 2: 15000, 3: 20000 }; // how long a full depth-2 / depth-3 walk takes
+  const START_RATE = 1.6; // move events per second at the start (about the depth-1 pace)
   const LOOP_PAUSE_MS = 2500;
 
   const glyph = { k: "♚", q: "♛", r: "♜", b: "♝", n: "♞", p: "♟" };
@@ -135,38 +136,28 @@
     }
   }
 
-  // Count all positions at a depth (runs instantly; the board is restored after).
-  function perft(depth) {
+  // Number of make + unmake events in a full walk (runs instantly; the board is restored after).
+  function countMoveEvents(depth) {
     let n = 0;
-    for (const e of walk(depth, "w")) if (e.kind === "leaf") n++;
+    for (const e of walk(depth, "w")) if (e.kind !== "leaf") n++;
     return n;
   }
 
-  // Random sample lines for deeper runs: play `depth` moves, pause, take them back.
-  function* sampleLines(depth) {
-    while (performance.now() < countEnd) {
-      const line = [];
-      let side = "w";
-      for (let i = 0; i < depth; i++) {
-        const moves = legalMoves(side);
-        const m = moves[Math.floor(Math.random() * moves.length)];
-        make(m);
-        line.push(m);
-        yield { kind: "make", m };
-        side = other(side);
-      }
-      yield { kind: "pause" };
-      while (line.length) {
-        const m = line.pop();
-        unmake(m);
-        yield { kind: "unmake", m };
-      }
+  // Deeper runs walk every position, starting at the calm depth-1 pace and speeding up
+  // exponentially: rate(t) = START_RATE * e^(k t). Pick k so the walk ends after RUN_MS.
+  function solveGrowth(events, seconds) {
+    const done = (k) => (START_RATE / k) * (Math.exp(k * seconds) - 1);
+    let lo = 1e-6, hi = 10;
+    for (let i = 0; i < 100; i++) {
+      const mid = (lo + hi) / 2;
+      if (done(mid) < events) lo = mid; else hi = mid;
     }
+    return (lo + hi) / 2;
   }
 
   // ---- Visual runner ----
-  let timer = null, counter = null, events = null, count = 0, depth = 1;
-  let total = 0, countStart = 0, countEnd = 0;
+  let timer = null, frame = null, events = null, count = 0, depth = 1;
+  let runStart = 0, growth = 0, moveEvents = 0, applied = 0;
 
   function clearHighlights() {
     squareEls.forEach((el) => el.classList.remove("board__sq--hl"));
@@ -174,7 +165,7 @@
 
   const showCount = (n) => (countEl.textContent = n.toLocaleString("en-US"));
 
-  function apply(e) {
+  function apply(e, glideMs = MOVE_MS) {
     if (e.kind === "leaf") {
       showCount(++count);
       return;
@@ -182,6 +173,9 @@
     if (e.kind === "pause") return;
     const { m } = e;
     const piece = (e.kind === "make" ? board[m.to] : board[m.from]).el;
+    const transition = `transform ${glideMs}ms ease, opacity ${glideMs}ms ease`;
+    piece.style.transition = transition;
+    if (m.captured) m.captured.el.style.transition = transition;
     piece.style.zIndex = 2;
     if (e.kind === "make") {
       place(piece, m.to);
@@ -190,11 +184,12 @@
       place(piece, m.from);
       if (m.captured) m.captured.el.classList.remove("board__piece--captured");
     }
-    setTimeout(() => (piece.style.zIndex = ""), MOVE_MS + 50);
+    setTimeout(() => (piece.style.zIndex = ""), glideMs + 50);
     clearHighlights();
     if (e.kind === "make") [m.from, m.to].forEach((sq) => squareEls[sq].classList.add("board__sq--hl"));
   }
 
+  // Depth 1: one event at a time at the calm pace.
   function tick() {
     const { value, done } = events.next();
     if (done) return finish();
@@ -202,18 +197,22 @@
     timer = setTimeout(tick, value.kind === "leaf" ? 0 : DELAY[value.kind]);
   }
 
-  function updateCounter() {
-    const t = Math.min(1, (performance.now() - countStart) / (countEnd - countStart));
-    showCount(Math.round(total * t * t)); // ease in: slow start, then it races away
-    if (t >= 1) { clearInterval(counter); counter = null; }
+  // Depth 2 and 3: each frame, apply as many events as the accelerating schedule allows.
+  function step(now) {
+    const t = Math.max(0, (now - runStart) / 1000);
+    const target = Math.min(moveEvents, (START_RATE / growth) * (Math.exp(growth * t) - 1) + 1);
+    const rate = START_RATE * Math.exp(growth * t); // move events per second right now
+    const glideMs = Math.round(Math.min(MOVE_MS, (1000 / rate) * 0.8));
+    while (applied < target) {
+      const { value, done } = events.next();
+      if (done) { frame = null; return finish(); }
+      apply(value, glideMs < 30 ? 0 : glideMs);
+      if (value.kind !== "leaf") applied++;
+    }
+    frame = requestAnimationFrame(step);
   }
 
   function finish() {
-    if (depth > 1) {
-      clearInterval(counter);
-      counter = null;
-      showCount(total);
-    }
     clearHighlights();
     // Depth 1 keeps looping as the slide's idle animation; deeper runs hold their result.
     timer = depth === 1 ? setTimeout(() => run(1), LOOP_PAUSE_MS) : null;
@@ -221,8 +220,8 @@
 
   function stop() {
     clearTimeout(timer);
-    clearInterval(counter);
-    timer = counter = null;
+    cancelAnimationFrame(frame);
+    timer = frame = null;
   }
 
   function run(d) {
@@ -236,14 +235,17 @@
     setupPosition();
     if (d === 1) {
       events = walk(1, "w");
+      timer = setTimeout(tick, 400);
     } else {
-      total = perft(d);
-      countStart = performance.now() + 400;
-      countEnd = countStart + COUNT_UP_MS[d];
-      counter = setInterval(updateCounter, 50);
-      events = sampleLines(d);
+      moveEvents = countMoveEvents(d);
+      growth = solveGrowth(moveEvents, RUN_MS[d] / 1000);
+      applied = 0;
+      events = walk(d, "w");
+      timer = setTimeout(() => {
+        runStart = performance.now();
+        frame = requestAnimationFrame(step);
+      }, 400);
     }
-    timer = setTimeout(tick, 400);
   }
 
   buttons.forEach((b) =>
