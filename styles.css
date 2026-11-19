@@ -352,3 +352,14 @@ html, body {
 .links__group a { color: var(--seb-dark); font-weight: 700; text-decoration: underline; text-underline-offset: 0.15em; text-decoration-color: var(--seb-green); }
 .links__group span { color: var(--muted); font-size: 0.8em; margin-left: 0.4em; }
 .links__tools { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 1.5em; }
+
+/* Questions slide: large doodle on the right, white blended away over the green corner */
+.slide--title .title-block:has(+ .doodle--questions) { max-width: 46vw; }
+.doodle--questions {
+  top: 50%;
+  bottom: auto;
+  right: 4vw;
+  transform: translateY(-50%);
+  width: min(37vw, 72vh);
+  mix-blend-mode: multiply;
+}
