@@ -327,3 +327,5 @@ html, body {
 .stats-row .stats { font-size: clamp(0.85rem, 1.45vw, 1.4rem); }
 .stats-row .stats th, .stats-row .stats td { padding: 0.25em 1.8em 0.25em 0; }
 .stats-row .stats th:last-child, .stats-row .stats td:last-child { padding-right: 0; }
+.countdown { font-weight: 800; color: var(--seb-dark); font-variant-numeric: tabular-nums; }
+.subtitle--countdown { font-size: clamp(1.6rem, 3.6vw, 3.4rem); text-align: right; }

@@ -1,15 +1,19 @@
 # TODO
 
-- [ ] Make the speaker notes editable so i easily can change the source when running server locally.
+Make a list of links at the end.
+
+Continue with editing the speaker notes to be more me.
+
+Install the presentation on github pages.
 
 - [ ] Write about vibe coding for banking apps: you need to read the code and understand it. Don't code too fast.
 disclaimer that these methods does not produce bug free code. I dont think we should have the speed when we develop for a banks app.
 
-- [ ] Mention cost in the presentation
-
-- [ ] Write about how prompt reply time increased a lot after a while for Terminal Depth, but switching to Claude Code was a big improvement
-
-- [ ] Summary at the end, what I learned.
+Different strengths of AI.
+This changes alot over time.
+In my opinion the best coder at a reasonable price is Claude Opus 5.5
+Gemeni has an amazing tool for music composition.
+And ChatGPT is the artistic one generating amazing images.
 
 2 polls in teams
 I am a developer Yes No

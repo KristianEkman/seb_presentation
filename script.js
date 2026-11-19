@@ -46,6 +46,18 @@
     return { el, stop };
   });
 
+  // Countdowns: data-countdown="<seconds>" starts the first time its slide is shown, stops at 0:00.
+  const countdowns = Array.from(document.querySelectorAll("[data-countdown]")).map((el) => {
+    let left = parseInt(el.dataset.countdown, 10), timer = null;
+    const render = () => { el.textContent = `${Math.floor(left / 60)}:${String(left % 60).padStart(2, "0")}`; };
+    const start = () => {
+      if (timer) return;
+      render();
+      timer = setInterval(() => { if (left > 0) { left--; render(); } else clearInterval(timer); }, 1000);
+    };
+    return { el, start };
+  });
+
   function show(index) {
     current = Math.max(0, Math.min(slides.length - 1, index));
     slides.forEach((s, i) => s.classList.toggle("active", i === current));
@@ -54,6 +66,7 @@
     history.replaceState(null, "", `#${current + 1}`);
     slideshows.forEach((ss) => { if (!slides[current].contains(ss.el)) ss.stop(); });
     videos.forEach((vd) => { if (!slides[current].contains(vd.el)) vd.stop(); });
+    countdowns.forEach((cd) => { if (slides[current].contains(cd.el)) cd.start(); });
     broadcast();
   }
 
