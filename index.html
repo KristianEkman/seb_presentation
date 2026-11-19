@@ -1,477 +1,933 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lessons learned when building with AI for fun</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <main class="deck">
-
-    <!-- Slide 0: Poll and countdown before the talk -->
-    <section class="slide slide--title">
-      <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB">
-      <div class="title-block">
-        <span class="accent-bar"></span>
-        <h1>Do the poll in the chat</h1>
-        <p class="subtitle subtitle--countdown">We start in <span class="countdown" data-countdown="180">3:00</span> minutes</p>
-      </div>
-    </section>
-
-    <!-- Slide 1: Title -->
-    <section class="slide slide--title">
-      <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB">
-      <div class="title-block">
-        <span class="accent-bar"></span>
-        <h1>Lessons learned when building with AI for fun</h1>
-        <p class="subtitle">Chess engines, games and lessons you can use.</p>
-      </div>
-      <footer class="footnote">Kristian Ekman, 2026-11-20</footer>
-    </section>
-
-    <!-- Slide 2: Why these projects -->
-    <section class="slide slide--content">
-      <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB">
-      <div class="content-block">
-        <span class="accent-bar"></span>
-        <h2>Why build a hobby project with AI?</h2>
-        <ul class="points">
-          <li>Take back the joy of developing, and build what you never could before</li>
-          <li>Find out if a real app or game can be built with AI</li>
-          <li>See if larger projects get unstable or sloppy over time</li>
-          <li>Learn how much supervision the AI needs</li>
-          <li>Become a better prompt programmer</li>
-        </ul>
-      </div>
-      <img class="doodle" src="images/slide2-doodle.webp" alt="" aria-hidden="true" style="position:absolute; right:16px; bottom:16px; width:clamp(224px, 25.6vw, 416px); height:auto;">
-    </section>
-
-    <!-- Slide 3: Findings -->
-    <section class="slide slide--content">
-      <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB">
-      <div class="content-block">
-        <span class="accent-bar"></span>
-        <h2>Key lessons</h2>
-        <ul class="points">
-          <li>AI is better than you think.</li>
-          <li>Split tasks into sub-tasks for better results.</li>
-          <li>Guide the AI as much as possible, review and test.</li>
-        </ul>
-      </div>
-      <img class="doodle doodle--top" src="images/slide3-doodle.webp" alt="" aria-hidden="true" style="position:absolute; right:10vw; top:10vh; width:clamp(224px, 25.6vw, 416px); height:auto;">
-    </section>
-
-    <!-- Slide 4: About me -->
-    <section class="slide slide--content">
-      <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB">
-      <div class="content-block">
-        <span class="accent-bar"></span>
-        <h2>About me</h2>
-        <ul class="points">
-          <li>Coding since the 80s, professional developer since 2001</li>
-          <li>Former math &amp; chemistry teacher</li>
-          <li>Product companies, med tech, consulting</li>
-          <li>SEB since 2024, developer in the HULT team</li>
-          <li>Programming hobbyist, especially chess engines</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Slide 5: Chess engines -->
-    <section class="slide slide--content">
-      <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB">
-      <div class="content-block">
-        <span class="accent-bar"></span>
-        <h2>Chess engines</h2>
-        <ul class="points">
-          <li>Set a measurable goal, e.g. ranked on <a href="https://computerchess.org.uk/" target="_blank" rel="noopener">CCRL</a> at 2000 Elo</li>
-          <li>Baseline by hand: ChessMatrix, Elo 1863, rank ~700 globally</li>
-          <li>With AI (summer 2026): ZeroG, Elo 2666, rank 398 globally</li>
-          <li>Gate every change: 400 games vs. previous version</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Slide 6: Move generation -->
-    <section class="slide slide--content">
-      <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB">
-      <div class="content-block content-block--split">
-        <div class="movegen" data-movegen>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lessons learned when building with AI for fun</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="deck">
+      <!-- Slide 0: Poll and countdown before the talk -->
+      <section class="slide slide--title">
+        <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB" />
+        <div class="title-block">
           <span class="accent-bar"></span>
-          <h2>Move generation</h2>
-          <p class="lead">Every move opens a new position. Each of those has its own moves.</p>
-          <div class="depth-buttons" role="group" aria-label="Search depth">
-            <button type="button" data-depth="1">Depth 1</button>
-            <button type="button" data-depth="2">Depth 2</button>
-            <button type="button" data-depth="3">Depth 3</button>
-          </div>
-          <p class="node-count" aria-live="polite"><span data-count>0</span> positions</p>
-          <table class="growth">
-            <thead><tr><th>Depth</th><th>Positions</th></tr></thead>
-            <tbody>
-              <tr data-row="1"><td>1</td><td>20</td></tr>
-              <tr data-row="2"><td>2</td><td>400</td></tr>
-              <tr data-row="3"><td>3</td><td>8,902</td></tr>
-              <tr><td>4</td><td>197,281</td></tr>
-              <tr><td>5</td><td>4,865,609</td></tr>
-              <tr><td>6</td><td>119,060,324</td></tr>
-            </tbody>
-          </table>
+          <h1>Do the poll in the chat</h1>
+          <p class="subtitle subtitle--countdown">
+            We start in
+            <span class="countdown" data-countdown="180">3:00</span> minutes
+          </p>
         </div>
-        <div class="board" data-chessboard></div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Slide 7: Search and pruning -->
-    <section class="slide slide--content">
-      <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB">
-      <div class="content-block content-block--split">
-        <div>
+      <!-- Slide 1: Title -->
+      <section class="slide slide--title">
+        <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB" />
+        <div class="title-block">
           <span class="accent-bar"></span>
-          <h2>Search and pruning</h2>
-          <ol class="points points--compact">
-            <li><strong>Search</strong> ahead, assuming best play (minimax)</li>
-            <li><strong>Prune</strong> lines that can't matter (alpha&#8209;beta)</li>
-            <li><strong>Evaluate</strong> the end positions</li>
-          </ol>
+          <h1>Lessons learned when building with AI for fun</h1>
+          <p class="subtitle">Chess engines, games and lessons you can use.</p>
         </div>
-        <svg class="tree" viewBox="0 0 700 400" role="img"
-             aria-label="Search tree: my two moves, each with three opponent replies. Left move scores 3. Right move: first reply scores 2, so its other replies are pruned. Best move is the left one, worth 3.">
-          <!-- Level labels -->
-          <g class="tree__level">
-            <text x="0" y="56">Me: max</text>
-            <text x="0" y="196">Opponent: min</text>
-            <text x="0" y="336">Evaluate</text>
-          </g>
+        <footer class="footnote">Kristian Ekman, 2026-11-20</footer>
+      </section>
 
-          <!-- Edges -->
-          <line class="tree__edge tree__edge--best" x1="420" y1="50" x2="290" y2="190"/>
-          <line class="tree__edge" x1="420" y1="50" x2="550" y2="190"/>
-          <line class="tree__edge tree__edge--best" x1="290" y1="190" x2="210" y2="330"/>
-          <line class="tree__edge" x1="290" y1="190" x2="290" y2="330"/>
-          <line class="tree__edge" x1="290" y1="190" x2="370" y2="330"/>
-          <line class="tree__edge" x1="550" y1="190" x2="470" y2="330"/>
-          <line class="tree__edge tree__edge--pruned" x1="550" y1="190" x2="550" y2="330"/>
-          <line class="tree__edge tree__edge--pruned" x1="550" y1="190" x2="630" y2="330"/>
-
-          <!-- Nodes -->
-          <g class="tree__node tree__node--best"><circle cx="420" cy="50" r="28"/><text x="420" y="50">3</text></g>
-          <g class="tree__node tree__node--best"><circle cx="290" cy="190" r="28"/><text x="290" y="190">3</text></g>
-          <g class="tree__node"><circle cx="550" cy="190" r="28"/><text x="550" y="190">≤2</text></g>
-          <g class="tree__node tree__node--best"><circle cx="210" cy="330" r="28"/><text x="210" y="330">3</text></g>
-          <g class="tree__node"><circle cx="290" cy="330" r="28"/><text x="290" y="330">12</text></g>
-          <g class="tree__node"><circle cx="370" cy="330" r="28"/><text x="370" y="330">8</text></g>
-          <g class="tree__node"><circle cx="470" cy="330" r="28"/><text x="470" y="330">2</text></g>
-          <g class="tree__node tree__node--pruned"><circle cx="550" cy="330" r="28"/><text x="550" y="330">?</text></g>
-          <g class="tree__node tree__node--pruned"><circle cx="630" cy="330" r="28"/><text x="630" y="330">?</text></g>
-
-          <!-- Annotations -->
-          <text class="tree__note" x="590" y="392">pruned</text>
-          <text class="tree__note tree__note--best" x="420" y="12">best move</text>
-        </svg>
-      </div>
-    </section>
-
-    <!-- Slide 8: Pruning and evaluation -->
-    <section class="slide slide--content">
-      <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB">
-      <div class="content-block">
-        <span class="accent-bar"></span>
-        <h2>Pruning and evaluation</h2>
-        <ul class="points">
-          <li>Alpha&#8209;beta is only the start. Strong engines prune much more</li>
-          <li><strong>Null move:</strong> pass a turn. Still winning? Skip the line</li>
-          <li><strong>Late move reductions:</strong> search unlikely moves less deeply</li>
-          <li><strong>Futility pruning:</strong> skip quiet moves that can't catch up</li>
-          <li><strong>Evaluation:</strong> today a trained neural network (NNUE)</li>
-        </ul>
-      </div>
-      <img class="doodle" src="images/slide8-doodle.webp" alt="" aria-hidden="true" style="position:absolute; right:16px; bottom:16px; width:clamp(224px, 25.6vw, 416px); height:auto;">
-    </section>
-
-    <!-- Slide 9: Profiling -->
-    <section class="slide slide--content">
-      <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB">
-      <div class="content-block">
-        <span class="accent-bar"></span>
-        <h2>Let the AI read the profiler</h2>
-        <ul class="points points--fit">
-          <li>A faster search sees deeper and plays stronger</li>
-          <li>Ask the AI to set up benchmarks and a profiler (macOS <strong>sample</strong>)</li>
-          <li>Make it one command: run the benchmark, sample where the time goes</li>
-          <li>Let the AI read the output and find the bottlenecks itself</li>
-          <li>The search got much faster, and I did little of the work</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Slide 10: Objective proof -->
-    <section class="slide slide--content">
-      <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB">
-      <div class="content-block">
-        <span class="accent-bar"></span>
-        <h2>Prove it with numbers</h2>
-        <ul class="points">
-          <li>Elo is calculated from game results</li>
-          <li>Make every change win a gate (400 games), or reject it</li>
-          <li>Use independent ratings: CCRL plays engines against engines</li>
-          <li>Years by hand: 1863 Elo. One summer with AI: 2666 Elo</li>
-          <li>Most AI gains are hard to measure, so measure the ones you can</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Slide 11: Jetpack -->
-    <section class="slide slide--content">
-      <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB">
-      <div class="content-block content-block--split content-block--media">
-        <div>
+      <!-- Slide 2: Why these projects -->
+      <section class="slide slide--content">
+        <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB" />
+        <div class="content-block">
           <span class="accent-bar"></span>
-          <h2>Jetpack</h2>
-          <ul class="points points--small">
-            <li>Start with a simple game you like to play yourself</li>
-            <li>Antigravity + Gemini 3.8: done in under a month</li>
-            <li>Expect the feel to be hardest, e.g. natural jetpack turns</li>
-            <li>Start in JavaScript, let the AI convert to TypeScript later</li>
-            <li>Generate graphics and sound from prompts</li>
-            <li>Share it: free to play, ~60 players, <a href="https://github.com/KristianEkman/jetpack" target="_blank" rel="noopener">open source on GitHub</a></li>
+          <h2>Why build a hobby project with AI?</h2>
+          <ul class="points">
+            <li>
+              Take back the joy of developing, and build what you never could
+              before
+            </li>
+            <li>Find out if a real app or game can be built with AI</li>
+            <li>See if larger projects get unstable or sloppy over time</li>
+            <li>Learn how much supervision the AI needs</li>
+            <li>Become a better prompt programmer</li>
           </ul>
         </div>
-        <div class="shots" data-slideshow data-audio="audio/jetpack-level6-loud.mp3" title="Click to play">
-          <img class="shots__img is-current" src="images/jetpack-stage10.jpg" alt="Jetpack gameplay, stage 10 boss">
-          <img class="shots__img" src="images/jetpack-menu.jpg" alt="Jetpack main menu">
-          <img class="shots__img" src="images/jetpack-stage1.jpg" alt="Jetpack gameplay, stage 1">
-          <img class="shots__img" src="images/jetpack-stage8.jpg" alt="Jetpack gameplay, stage 8">
-          <span class="shots__play" aria-hidden="true"></span>
-        </div>
-      </div>
-    </section>
+        <img
+          class="doodle"
+          src="images/slide2-doodle.webp"
+          alt=""
+          aria-hidden="true"
+          style="
+            position: absolute;
+            right: 16px;
+            bottom: 16px;
+            width: clamp(224px, 25.6vw, 416px);
+            height: auto;
+          "
+        />
+      </section>
 
-    <!-- Slide 12: Jetpack takeaways -->
-    <section class="slide slide--content">
-      <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB">
-      <div class="content-block">
-        <span class="accent-bar"></span>
-        <h2>Lessons from Jetpack</h2>
-        <ul class="points">
-          <li>Long bug hunts make the code worse</li>
-          <li>After a bug hunt, ask the AI to clean up</li>
-          <li>Clean code helps the AI as much as it helps us</li>
-          <li>Use AI for refactoring. It's fast and never broke anything for me</li>
-          <li>Let it set up code coverage, then use it to write missing tests</li>
-        </ul>
-      </div>
-      <img class="doodle doodle--top" src="images/slide12-doodle.webp" alt="" aria-hidden="true" style="position:absolute; right:16px; top:16px; width:clamp(224px, 25.6vw, 416px); height:auto;">
-    </section>
-
-    <!-- Slide 13: Terminal Depth intro + gameplay video -->
-    <section class="slide slide--content">
-      <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB">
-      <div class="content-block content-block--split content-block--media">
-        <div>
+      <!-- Slide 3: Findings -->
+      <section class="slide slide--content">
+        <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB" />
+        <div class="content-block">
           <span class="accent-bar"></span>
-          <h2>Terminal Depth</h2>
-          <ul class="points points--small">
-            <li>Test on a small project first, then go for the dream</li>
-            <li>Can you rebuild a game you loved, in a modern way?</li>
-            <li>3D first-person, six degrees of freedom</li>
-            <li>New ground is fine: 3D modelling and a real game engine</li>
-            <li>Online multiplayer combat</li>
+          <h2>Key lessons</h2>
+          <ul class="points">
+            <li>Split tasks into sub-tasks for better results.</li>
+            <li>Guide the AI as much as possible, review and test.</li>
+            <li>AI might be better than you think.</li>
           </ul>
         </div>
-        <!-- Gameplay video (1440x1080, 4:3). Click to play/pause. -->
-        <div class="shots video" data-video title="Click to play">
-          <div class="video__placeholder" aria-hidden="true">Gameplay video</div>
-          <video class="video__el" src="video/TerminalDepth_demo_seb-loud.mp4" preload="auto" playsinline></video>
-          <span class="shots__play" aria-hidden="true"></span>
+        <img
+          class="doodle doodle--top"
+          src="images/slide3-doodle.webp"
+          alt=""
+          aria-hidden="true"
+          style="
+            position: absolute;
+            right: 10vw;
+            top: 10vh;
+            width: clamp(224px, 25.6vw, 416px);
+            height: auto;
+          "
+        />
+      </section>
+
+      <!-- Slide 4: About me -->
+      <section class="slide slide--content">
+        <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB" />
+        <div class="content-block">
+          <span class="accent-bar"></span>
+          <h2>About me</h2>
+          <ul class="points">
+            <li>Coding since the 80s, professional developer since 2001</li>
+            <li>Former math &amp; chemistry teacher</li>
+            <li>Product companies, med tech, consulting</li>
+            <li>SEB since 2024, developer in the HULT team</li>
+            <li>Programming hobbyist, especially chess engines</li>
+          </ul>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Slide 14: Terminal Depth: concept art to 3D model -->
-    <section class="slide slide--content">
-      <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB">
-      <div class="content-block">
-        <span class="accent-bar"></span>
-        <h2>From concept art to 3D model</h2>
-        <ul class="points points--fit">
-          <li><strong>ChatGPT:</strong> create concept art for enemies, ship, weapons, items</li>
-          <li><strong>Meshy.ai:</strong> turn each image into a 3D model</li>
-          <li><strong>Gemini or Claude:</strong> import the models into the game</li>
-          <li><strong>Blender:</strong> make small manual fixes, cut polygons for speed</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Slide 15: Terminal Depth: sound, music and engine -->
-    <section class="slide slide--content">
-      <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB">
-      <div class="content-block">
-        <span class="accent-bar"></span>
-        <h2>Music, sound and engine</h2>
-        <ul class="points points--fit">
-          <li><strong>Music:</strong> try Gemini chat with its music plugin</li>
-          <li><strong>Sound effects:</strong> try ElevenLabs</li>
-          <li><strong>Engine:</strong> e.g. Godot, with C# for the game logic</li>
-          <li>Unlike Jetpack, each job gets its own AI tool</li>
-        </ul>
-      </div>
-      <img class="doodle" src="images/slide15-doodle.webp" alt="" aria-hidden="true" style="position:absolute; right:16px; bottom:16px; width:clamp(224px, 25.6vw, 416px); height:auto;">
-    </section>
-
-    <!-- Slide 16: Terminal Depth in numbers -->
-    <section class="slide slide--content">
-      <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB">
-      <div class="content-block">
-        <span class="accent-bar"></span>
-        <h2>Terminal Depth in numbers</h2>
-        <p class="lead lead--stats">What you can build in two months (first commit 11 September)</p>
-        <div class="stats-row">
-        <table class="stats">
-          <thead><tr><th>Category</th><th>Lines</th></tr></thead>
-          <tbody>
-            <tr><td>C# game code</td><td>54,509</td></tr>
-            <tr><td>C# tests</td><td>20,930</td></tr>
-            <tr><td>Python (3D/texture pipeline, tools)</td><td>20,839</td></tr>
-            <tr><td>GDScript (headless checks, render scripts)</td><td>17,795</td></tr>
-            <tr><td>Shaders</td><td>1,141</td></tr>
-            <tr><td>Shell scripts</td><td>88</td></tr>
-          </tbody>
-          <tfoot><tr><td>Total</td><td>≈115,300</td></tr></tfoot>
-        </table>
-        <table class="stats">
-          <thead><tr><th>Category</th><th>Count</th></tr></thead>
-          <tbody>
-            <tr><td>Scenes</td><td>97</td></tr>
-            <tr><td>Sound effects</td><td>78</td></tr>
-            <tr><td>3D models</td><td>70</td></tr>
-            <tr><td>Textures</td><td>47</td></tr>
-            <tr><td>Story voice lines</td><td>15</td></tr>
-            <tr><td>Enemy types</td><td>11</td></tr>
-            <tr><td>Rooms / chambers</td><td>7</td></tr>
-            <tr><td>Music tracks</td><td>6</td></tr>
-            <tr><td>Corridors / tunnels</td><td>5</td></tr>
-            <tr><td>Playable levels</td><td>4</td></tr>
-          </tbody>
-        </table>
+      <!-- Slide 5: Chess engines -->
+      <section class="slide slide--content">
+        <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB" />
+        <div class="content-block">
+          <span class="accent-bar"></span>
+          <h2>Chess engines</h2>
+          <ul class="points">
+            <li>
+              Set a measurable goal, e.g. ranked on
+              <a
+                href="https://computerchess.org.uk/"
+                target="_blank"
+                rel="noopener"
+                >CCRL</a
+              >
+              at 2000 Elo
+            </li>
+            <li>Baseline by hand: ChessMatrix, Elo 1863, rank ~700 globally</li>
+            <li>With AI (summer 2026): ZeroG, Elo 2666, rank 398 globally</li>
+            <li>Gate every change: 400 games vs. previous version</li>
+          </ul>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Slide 17: Terminal Depth: rules, skills and tech debt -->
-    <section class="slide slide--content">
-      <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB">
-      <div class="content-block">
-        <span class="accent-bar"></span>
-        <h2>Rules, skills and tech debt</h2>
-        <ul class="points points--fit">
-          <li><strong>AGENTS.md:</strong> keep one set of project rules for every AI agent</li>
-          <li><strong>Rules:</strong> split into small files, loaded only for their area (12 here)</li>
-          <li><strong>Skills:</strong> let the AI build and save scripts, then reuse them for similar complex work, e.g. the 3D pipeline, level assembly</li>
-          <li><strong>Your own rules:</strong> propose new skills, point out tech debt, never commit, allow no warnings</li>
-          <li>Let the AI write the other rules and skills; you review and accept</li>
-          <li><strong>Tech debt:</strong> have the AI report it, then fix it in separate cleanup passes</li>
-        </ul>
-      </div>
-    </section>
+      <!-- Slide 6: Move generation -->
+      <section class="slide slide--content">
+        <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB" />
+        <div class="content-block content-block--split">
+          <div class="movegen" data-movegen>
+            <span class="accent-bar"></span>
+            <h2>Move generation</h2>
+            <p class="lead">
+              Every move opens a new position. Each of those has its own moves.
+            </p>
+            <div class="depth-buttons" role="group" aria-label="Search depth">
+              <button type="button" data-depth="1">Depth 1</button>
+              <button type="button" data-depth="2">Depth 2</button>
+              <button type="button" data-depth="3">Depth 3</button>
+            </div>
+            <p class="node-count" aria-live="polite">
+              <span data-count>0</span> positions
+            </p>
+            <table class="growth">
+              <thead>
+                <tr>
+                  <th>Depth</th>
+                  <th>Positions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-row="1">
+                  <td>1</td>
+                  <td>20</td>
+                </tr>
+                <tr data-row="2">
+                  <td>2</td>
+                  <td>400</td>
+                </tr>
+                <tr data-row="3">
+                  <td>3</td>
+                  <td>8,902</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>197,281</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>4,865,609</td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>119,060,324</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="board" data-chessboard></div>
+        </div>
+      </section>
 
-    <!-- Slide 18: General advice -->
-    <section class="slide slide--content">
-      <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB">
-      <div class="content-block">
-        <span class="accent-bar"></span>
-        <h2>Advice for your AI hobby project</h2>
-        <ul class="points points--fit">
-          <li>Start small, then go for the dream project</li>
-          <li>Set a measurable goal, and make every change prove itself</li>
-          <li>Split the work into small steps, the ones you'd take yourself</li>
-          <li>Give the AI ways to measure: tests, coverage, benchmarks, profiler</li>
-          <li>Keep the code clean: clean up after bug hunts, refactor often</li>
-          <li>Write rules and skills with the AI; you review and commit</li>
-        </ul>
-      </div>
-    </section>
+      <!-- Slide 7: Search and pruning -->
+      <section class="slide slide--content">
+        <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB" />
+        <div class="content-block content-block--split">
+          <div>
+            <span class="accent-bar"></span>
+            <h2>Search and pruning</h2>
+            <ol class="points points--compact">
+              <li>
+                <strong>Search</strong> ahead, assuming best play (minimax)
+              </li>
+              <li>
+                <strong>Prune</strong> lines that can't matter
+                (alpha&#8209;beta)
+              </li>
+              <li><strong>Evaluate</strong> the end positions</li>
+            </ol>
+          </div>
+          <svg
+            class="tree"
+            viewBox="0 0 700 400"
+            role="img"
+            aria-label="Search tree: my two moves, each with three opponent replies. Left move scores 3. Right move: first reply scores 2, so its other replies are pruned. Best move is the left one, worth 3."
+          >
+            <!-- Level labels -->
+            <g class="tree__level">
+              <text x="0" y="56">Me: max</text>
+              <text x="0" y="196">Opponent: min</text>
+              <text x="0" y="336">Evaluate</text>
+            </g>
 
-    <!-- Slide 19: Disclaimer for banking code -->
-    <section class="slide slide--content">
-      <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB">
-      <div class="content-block">
-        <span class="accent-bar"></span>
-        <h2>A banking app is not a hobby project</h2>
-        <ul class="points points--fit">
-          <li>These methods don't produce bug-free code</li>
-          <li>Go slower on a banking app than on a hobby project</li>
-          <li>Read and understand every line you commit</li>
-          <li>You own the code the AI writes, so don't rush it</li>
-        </ul>
-      </div>
-      <img class="doodle" src="images/disclaimer-doodle.webp" alt="" aria-hidden="true" style="position:absolute; right:16px; bottom:16px; width:clamp(260px, 30vw, 480px); height:auto;">
-    </section>
+            <!-- Edges -->
+            <line
+              class="tree__edge tree__edge--best"
+              x1="420"
+              y1="50"
+              x2="290"
+              y2="190"
+            />
+            <line class="tree__edge" x1="420" y1="50" x2="550" y2="190" />
+            <line
+              class="tree__edge tree__edge--best"
+              x1="290"
+              y1="190"
+              x2="210"
+              y2="330"
+            />
+            <line class="tree__edge" x1="290" y1="190" x2="290" y2="330" />
+            <line class="tree__edge" x1="290" y1="190" x2="370" y2="330" />
+            <line class="tree__edge" x1="550" y1="190" x2="470" y2="330" />
+            <line
+              class="tree__edge tree__edge--pruned"
+              x1="550"
+              y1="190"
+              x2="550"
+              y2="330"
+            />
+            <line
+              class="tree__edge tree__edge--pruned"
+              x1="550"
+              y1="190"
+              x2="630"
+              y2="330"
+            />
 
-    <!-- Slide 20: Links -->
-    <section class="slide slide--content">
-      <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB">
-      <div class="content-block">
-        <span class="accent-bar"></span>
-        <h2>Links</h2>
-        <div class="links">
-          <div class="links__group">
-            <h3>Play the games</h3>
-            <ul>
-              <li><a href="https://jetpack-bxhfeag3aucvfnf0.northcentralus-01.azurewebsites.net/" target="_blank" rel="noopener">Jetpack</a> <span>in the browser, free</span></li>
-              <li><a href="https://kristianekman.itch.io/terminal-depth" target="_blank" rel="noopener">Terminal Depth</a> <span>kristianekman.itch.io</span></li>
+            <!-- Nodes -->
+            <g class="tree__node tree__node--best">
+              <circle cx="420" cy="50" r="28" />
+              <text x="420" y="50">3</text>
+            </g>
+            <g class="tree__node tree__node--best">
+              <circle cx="290" cy="190" r="28" />
+              <text x="290" y="190">3</text>
+            </g>
+            <g class="tree__node">
+              <circle cx="550" cy="190" r="28" />
+              <text x="550" y="190">≤2</text>
+            </g>
+            <g class="tree__node tree__node--best">
+              <circle cx="210" cy="330" r="28" />
+              <text x="210" y="330">3</text>
+            </g>
+            <g class="tree__node">
+              <circle cx="290" cy="330" r="28" />
+              <text x="290" y="330">12</text>
+            </g>
+            <g class="tree__node">
+              <circle cx="370" cy="330" r="28" />
+              <text x="370" y="330">8</text>
+            </g>
+            <g class="tree__node">
+              <circle cx="470" cy="330" r="28" />
+              <text x="470" y="330">2</text>
+            </g>
+            <g class="tree__node tree__node--pruned">
+              <circle cx="550" cy="330" r="28" />
+              <text x="550" y="330">?</text>
+            </g>
+            <g class="tree__node tree__node--pruned">
+              <circle cx="630" cy="330" r="28" />
+              <text x="630" y="330">?</text>
+            </g>
+
+            <!-- Annotations -->
+            <text class="tree__note" x="590" y="392">pruned</text>
+            <text class="tree__note tree__note--best" x="420" y="12">
+              best move
+            </text>
+          </svg>
+        </div>
+      </section>
+
+      <!-- Slide 8: Pruning and evaluation -->
+      <section class="slide slide--content">
+        <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB" />
+        <div class="content-block">
+          <span class="accent-bar"></span>
+          <h2>Pruning and evaluation</h2>
+          <ul class="points">
+            <li>
+              Alpha&#8209;beta is only the start. Strong engines prune much more
+            </li>
+            <li>
+              <strong>Null move:</strong> pass a turn. Still winning? Skip the
+              line
+            </li>
+            <li>
+              <strong>Late move reductions:</strong> search unlikely moves less
+              deeply
+            </li>
+            <li>
+              <strong>Futility pruning:</strong> skip quiet moves that can't
+              catch up
+            </li>
+            <li>
+              <strong>Evaluation:</strong> today a trained neural network (NNUE)
+            </li>
+          </ul>
+        </div>
+        <img
+          class="doodle"
+          src="images/slide8-doodle.webp"
+          alt=""
+          aria-hidden="true"
+          style="
+            position: absolute;
+            right: 16px;
+            bottom: 16px;
+            width: clamp(224px, 25.6vw, 416px);
+            height: auto;
+          "
+        />
+      </section>
+
+      <!-- Slide 9: Profiling -->
+      <section class="slide slide--content">
+        <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB" />
+        <div class="content-block">
+          <span class="accent-bar"></span>
+          <h2>Let the AI read the profiler</h2>
+          <ul class="points points--fit">
+            <li>A faster search sees deeper and plays stronger</li>
+            <li>
+              Ask the AI to set up benchmarks and a profiler (macOS
+              <strong>sample</strong>)
+            </li>
+            <li>
+              Make it one command: run the benchmark, sample where the time goes
+            </li>
+            <li>Let the AI read the output and find the bottlenecks itself</li>
+            <li>The search got much faster, and I did little of the work</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Slide 10: Objective proof -->
+      <section class="slide slide--content">
+        <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB" />
+        <div class="content-block">
+          <span class="accent-bar"></span>
+          <h2>Prove it with numbers</h2>
+          <ul class="points">
+            <li>Elo is calculated from game results</li>
+            <li>Make every change win a gate (400 games), or reject it</li>
+            <li>Use independent ratings: CCRL plays engines against engines</li>
+            <li>Years by hand: 1863 Elo. One summer with AI: 2666 Elo</li>
+            <li>
+              Most AI gains are hard to measure, so measure the ones you can
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Slide 11: Jetpack -->
+      <section class="slide slide--content">
+        <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB" />
+        <div class="content-block content-block--split content-block--media">
+          <div>
+            <span class="accent-bar"></span>
+            <h2>Jetpack</h2>
+            <ul class="points points--small">
+              <li>Start with a simple game you like to play yourself</li>
+              <li>Antigravity + Gemini 3.8: done in under a month</li>
+              <li>Expect the feel to be hardest, e.g. natural jetpack turns</li>
+              <li>
+                Start in JavaScript, let the AI convert to TypeScript later
+              </li>
+              <li>Generate graphics and sound from prompts</li>
+              <li>
+                Share it: free to play, ~60 players,
+                <a
+                  href="https://github.com/KristianEkman/jetpack"
+                  target="_blank"
+                  rel="noopener"
+                  >open source on GitHub</a
+                >
+              </li>
             </ul>
           </div>
-          <div class="links__group">
-            <h3>Open source</h3>
-            <ul>
-              <li><a href="https://github.com/KristianEkman/jetpack" target="_blank" rel="noopener">Jetpack</a> <span>github.com/KristianEkman/jetpack</span></li>
-              <li><a href="https://github.com/KristianEkman/ZeroG" target="_blank" rel="noopener">ZeroG</a> <span>chess engine, with AI</span></li>
-              <li><a href="https://github.com/KristianEkman/ChessMatrix" target="_blank" rel="noopener">ChessMatrix</a> <span>chess engine, by hand</span></li>
-            </ul>
-          </div>
-          <div class="links__group">
-            <h3>Chess engines</h3>
-            <ul>
-              <li><a href="https://computerchess.org.uk/" target="_blank" rel="noopener">CCRL</a> <span>engine rating lists</span></li>
-              <li><a href="https://computerchess.org.uk/ccrl/4040/cgi/engine_details.cgi?print=Details&amp;each_game=0&amp;eng=ZeroG%201.0.2%2064-bit#ZeroG_1_0_2_64-bit" target="_blank" rel="noopener">ZeroG on CCRL</a> <span>40/15, 2666 Elo</span></li>
-              <li><a href="https://www.chessprogramming.org/" target="_blank" rel="noopener">Chess Programming Wiki</a> <span>search, pruning, NNUE</span></li>
-            </ul>
-          </div>
-          <div class="links__group">
-            <h3>AI tools used</h3>
-            <ul class="links__tools">
-              <li><a href="https://claude.com/claude-code" target="_blank" rel="noopener">Claude Code</a></li>
-              <li><a href="https://antigravity.google/" target="_blank" rel="noopener">Antigravity</a></li>
-              <li><a href="https://gemini.google.com/" target="_blank" rel="noopener">Gemini</a></li>
-              <li><a href="https://chatgpt.com/" target="_blank" rel="noopener">ChatGPT</a></li>
-              <li><a href="https://www.meshy.ai/" target="_blank" rel="noopener">Meshy</a></li>
-              <li><a href="https://elevenlabs.io/" target="_blank" rel="noopener">ElevenLabs</a></li>
-              <li><a href="https://godotengine.org/" target="_blank" rel="noopener">Godot</a></li>
-              <li><a href="https://www.blender.org/" target="_blank" rel="noopener">Blender</a></li>
-            </ul>
+          <div
+            class="shots"
+            data-slideshow
+            data-audio="audio/jetpack-level6-loud.mp3"
+            title="Click to play"
+          >
+            <img
+              class="shots__img is-current"
+              src="images/jetpack-stage10.jpg"
+              alt="Jetpack gameplay, stage 10 boss"
+            />
+            <img
+              class="shots__img"
+              src="images/jetpack-menu.jpg"
+              alt="Jetpack main menu"
+            />
+            <img
+              class="shots__img"
+              src="images/jetpack-stage1.jpg"
+              alt="Jetpack gameplay, stage 1"
+            />
+            <img
+              class="shots__img"
+              src="images/jetpack-stage8.jpg"
+              alt="Jetpack gameplay, stage 8"
+            />
+            <span class="shots__play" aria-hidden="true"></span>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Slide 21: Questions -->
-    <section class="slide slide--title">
-      <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB">
-      <div class="title-block">
-        <span class="accent-bar"></span>
-        <h1>Questions &amp; discussion</h1>
-      </div>
-      <img class="doodle doodle--questions" src="images/slide20-doodle.webp" alt="" aria-hidden="true">
-    </section>
+      <!-- Slide 12: Jetpack takeaways -->
+      <section class="slide slide--content">
+        <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB" />
+        <div class="content-block">
+          <span class="accent-bar"></span>
+          <h2>Lessons from Jetpack</h2>
+          <ul class="points">
+            <li>Long bug hunts make the code worse</li>
+            <li>After a bug hunt, ask the AI to clean up</li>
+            <li>Clean code helps the AI as much as it helps us</li>
+            <li>
+              Use AI for refactoring. It's fast and never broke anything for me
+            </li>
+            <li>
+              Let it set up code coverage, then use it to write missing tests
+            </li>
+          </ul>
+        </div>
+        <img
+          class="doodle doodle--top"
+          src="images/slide12-doodle.webp"
+          alt=""
+          aria-hidden="true"
+          style="
+            position: absolute;
+            right: 16px;
+            top: 16px;
+            width: clamp(224px, 25.6vw, 416px);
+            height: auto;
+          "
+        />
+      </section>
 
-  </main>
+      <!-- Slide 13: Terminal Depth intro + gameplay video -->
+      <section class="slide slide--content">
+        <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB" />
+        <div class="content-block content-block--split content-block--media">
+          <div>
+            <span class="accent-bar"></span>
+            <h2>Terminal Depth</h2>
+            <ul class="points points--small">
+              <li>Test on a small project first, then go for the dream</li>
+              <li>Can you rebuild a game you loved, in a modern way?</li>
+              <li>3D first-person, six degrees of freedom</li>
+              <li>New ground is fine: 3D modelling and a real game engine</li>
+              <li>Online multiplayer combat</li>
+            </ul>
+          </div>
+          <!-- Gameplay video (1440x1080, 4:3). Click to play/pause. -->
+          <div class="shots video" data-video title="Click to play">
+            <div class="video__placeholder" aria-hidden="true">
+              Gameplay video
+            </div>
+            <video
+              class="video__el"
+              src="video/TerminalDepth_demo_seb-loud.mp4"
+              preload="auto"
+              playsinline
+            ></video>
+            <span class="shots__play" aria-hidden="true"></span>
+          </div>
+        </div>
+      </section>
 
-  <div class="progress"><div class="progress__bar"></div></div>
-  <div class="counter"></div>
+      <!-- Slide 14: Terminal Depth: concept art to 3D model -->
+      <section class="slide slide--content">
+        <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB" />
+        <div class="content-block">
+          <span class="accent-bar"></span>
+          <h2>From concept art to 3D model</h2>
+          <ul class="points points--fit">
+            <li>
+              <strong>ChatGPT:</strong> create concept art for enemies, ship,
+              weapons, items
+            </li>
+            <li><strong>Meshy.ai:</strong> turn each image into a 3D model</li>
+            <li>
+              <strong>Gemini or Claude:</strong> import the models into the game
+            </li>
+            <li>
+              <strong>Blender:</strong> make small manual fixes, cut polygons
+              for speed
+            </li>
+          </ul>
+        </div>
+      </section>
 
-  <script src="script.js"></script>
-  <script src="chessboard.js"></script>
-</body>
+      <!-- Slide 15: Terminal Depth: sound, music and engine -->
+      <section class="slide slide--content">
+        <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB" />
+        <div class="content-block">
+          <span class="accent-bar"></span>
+          <h2>Music, sound and engine</h2>
+          <ul class="points points--fit">
+            <li>
+              <strong>Music:</strong> try Gemini chat with its music plugin
+            </li>
+            <li><strong>Sound effects:</strong> try ElevenLabs</li>
+            <li>
+              <strong>Engine:</strong> e.g. Godot, with C# for the game logic
+            </li>
+            <li>Unlike Jetpack, each job gets its own AI tool</li>
+          </ul>
+        </div>
+        <img
+          class="doodle"
+          src="images/slide15-doodle.webp"
+          alt=""
+          aria-hidden="true"
+          style="
+            position: absolute;
+            right: 16px;
+            bottom: 16px;
+            width: clamp(224px, 25.6vw, 416px);
+            height: auto;
+          "
+        />
+      </section>
+
+      <!-- Slide 16: Terminal Depth in numbers -->
+      <section class="slide slide--content">
+        <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB" />
+        <div class="content-block">
+          <span class="accent-bar"></span>
+          <h2>Terminal Depth in numbers</h2>
+          <p class="lead lead--stats">
+            What you can build in two months (first commit 11 September)
+          </p>
+          <div class="stats-row">
+            <table class="stats">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Lines</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>C# game code</td>
+                  <td>54,509</td>
+                </tr>
+                <tr>
+                  <td>C# tests</td>
+                  <td>20,930</td>
+                </tr>
+                <tr>
+                  <td>Python (3D/texture pipeline, tools)</td>
+                  <td>20,839</td>
+                </tr>
+                <tr>
+                  <td>GDScript (headless checks, render scripts)</td>
+                  <td>17,795</td>
+                </tr>
+                <tr>
+                  <td>Shaders</td>
+                  <td>1,141</td>
+                </tr>
+                <tr>
+                  <td>Shell scripts</td>
+                  <td>88</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td>Total</td>
+                  <td>≈115,300</td>
+                </tr>
+              </tfoot>
+            </table>
+            <table class="stats">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Count</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Scenes</td>
+                  <td>97</td>
+                </tr>
+                <tr>
+                  <td>Sound effects</td>
+                  <td>78</td>
+                </tr>
+                <tr>
+                  <td>3D models</td>
+                  <td>70</td>
+                </tr>
+                <tr>
+                  <td>Textures</td>
+                  <td>47</td>
+                </tr>
+                <tr>
+                  <td>Story voice lines</td>
+                  <td>15</td>
+                </tr>
+                <tr>
+                  <td>Enemy types</td>
+                  <td>11</td>
+                </tr>
+                <tr>
+                  <td>Rooms / chambers</td>
+                  <td>7</td>
+                </tr>
+                <tr>
+                  <td>Music tracks</td>
+                  <td>6</td>
+                </tr>
+                <tr>
+                  <td>Corridors / tunnels</td>
+                  <td>5</td>
+                </tr>
+                <tr>
+                  <td>Playable levels</td>
+                  <td>4</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 17: Terminal Depth: rules, skills and tech debt -->
+      <section class="slide slide--content">
+        <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB" />
+        <div class="content-block">
+          <span class="accent-bar"></span>
+          <h2>Rules, skills and tech debt</h2>
+          <ul class="points points--fit">
+            <li>
+              <strong>AGENTS.md:</strong> keep one set of project rules for
+              every AI agent
+            </li>
+            <li>
+              <strong>Rules:</strong> split into small files, loaded only for
+              their area (12 here)
+            </li>
+            <li>
+              <strong>Skills:</strong> let the AI build and save scripts, then
+              reuse them for similar complex work, e.g. the 3D pipeline, level
+              assembly
+            </li>
+            <li>
+              <strong>Your own rules:</strong> propose new skills, point out
+              tech debt, never commit, allow no warnings
+            </li>
+            <li>
+              Let the AI write the other rules and skills; you review and accept
+            </li>
+            <li>
+              <strong>Tech debt:</strong> have the AI report it, then fix it in
+              separate cleanup passes
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Slide 18: General advice -->
+      <section class="slide slide--content">
+        <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB" />
+        <div class="content-block">
+          <span class="accent-bar"></span>
+          <h2>Advice for your AI hobby project</h2>
+          <ul class="points points--fit">
+            <li>Start small, then go for the dream project</li>
+            <li>Set a measurable goal, and make every change prove itself</li>
+            <li>
+              Split the work into small steps, the ones you'd take yourself
+            </li>
+            <li>
+              Give the AI ways to measure: tests, coverage, benchmarks, profiler
+            </li>
+            <li>
+              Keep the code clean: clean up after bug hunts, refactor often
+            </li>
+            <li>Write rules and skills with the AI; you review and commit</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Slide 19: Disclaimer for banking code -->
+      <section class="slide slide--content">
+        <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB" />
+        <div class="content-block">
+          <span class="accent-bar"></span>
+          <h2>A banking app is not a hobby project</h2>
+          <ul class="points points--fit">
+            <li>These methods don't produce bug-free code</li>
+            <li>Go slower on a banking app than on a hobby project</li>
+            <li>Read and understand every line you commit</li>
+            <li>You own the code the AI writes, so don't rush it</li>
+          </ul>
+        </div>
+        <img
+          class="doodle"
+          src="images/disclaimer-doodle.webp"
+          alt=""
+          aria-hidden="true"
+          style="
+            position: absolute;
+            right: 16px;
+            bottom: 16px;
+            width: clamp(260px, 30vw, 480px);
+            height: auto;
+          "
+        />
+      </section>
+
+      <!-- Slide 20: Links -->
+      <section class="slide slide--content">
+        <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB" />
+        <div class="content-block">
+          <span class="accent-bar"></span>
+          <h2>Links</h2>
+          <div class="links">
+            <div class="links__group">
+              <h3>Play the games</h3>
+              <ul>
+                <li>
+                  <a
+                    href="https://jetpack-bxhfeag3aucvfnf0.northcentralus-01.azurewebsites.net/"
+                    target="_blank"
+                    rel="noopener"
+                    >Jetpack</a
+                  >
+                  <span>in the browser, free</span>
+                </li>
+                <li>
+                  <a
+                    href="https://kristianekman.itch.io/terminal-depth"
+                    target="_blank"
+                    rel="noopener"
+                    >Terminal Depth</a
+                  >
+                  <span>kristianekman.itch.io</span>
+                </li>
+              </ul>
+            </div>
+            <div class="links__group">
+              <h3>Open source</h3>
+              <ul>
+                <li>
+                  <a
+                    href="https://github.com/KristianEkman/jetpack"
+                    target="_blank"
+                    rel="noopener"
+                    >Jetpack</a
+                  >
+                  <span>github.com/KristianEkman/jetpack</span>
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/KristianEkman/ZeroG"
+                    target="_blank"
+                    rel="noopener"
+                    >ZeroG</a
+                  >
+                  <span>chess engine, with AI</span>
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/KristianEkman/ChessMatrix"
+                    target="_blank"
+                    rel="noopener"
+                    >ChessMatrix</a
+                  >
+                  <span>chess engine, by hand</span>
+                </li>
+              </ul>
+            </div>
+            <div class="links__group">
+              <h3>Chess engines</h3>
+              <ul>
+                <li>
+                  <a
+                    href="https://computerchess.org.uk/"
+                    target="_blank"
+                    rel="noopener"
+                    >CCRL</a
+                  >
+                  <span>engine rating lists</span>
+                </li>
+                <li>
+                  <a
+                    href="https://computerchess.org.uk/ccrl/4040/cgi/engine_details.cgi?print=Details&amp;each_game=0&amp;eng=ZeroG%201.0.2%2064-bit#ZeroG_1_0_2_64-bit"
+                    target="_blank"
+                    rel="noopener"
+                    >ZeroG on CCRL</a
+                  >
+                  <span>40/15, 2666 Elo</span>
+                </li>
+                <li>
+                  <a
+                    href="https://www.chessprogramming.org/"
+                    target="_blank"
+                    rel="noopener"
+                    >Chess Programming Wiki</a
+                  >
+                  <span>search, pruning, NNUE</span>
+                </li>
+              </ul>
+            </div>
+            <div class="links__group">
+              <h3>AI tools used</h3>
+              <ul class="links__tools">
+                <li>
+                  <a
+                    href="https://claude.com/claude-code"
+                    target="_blank"
+                    rel="noopener"
+                    >Claude Code</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://antigravity.google/"
+                    target="_blank"
+                    rel="noopener"
+                    >Antigravity</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://gemini.google.com/"
+                    target="_blank"
+                    rel="noopener"
+                    >Gemini</a
+                  >
+                </li>
+                <li>
+                  <a href="https://chatgpt.com/" target="_blank" rel="noopener"
+                    >ChatGPT</a
+                  >
+                </li>
+                <li>
+                  <a href="https://www.meshy.ai/" target="_blank" rel="noopener"
+                    >Meshy</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://elevenlabs.io/"
+                    target="_blank"
+                    rel="noopener"
+                    >ElevenLabs</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://godotengine.org/"
+                    target="_blank"
+                    rel="noopener"
+                    >Godot</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://www.blender.org/"
+                    target="_blank"
+                    rel="noopener"
+                    >Blender</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 21: Questions -->
+      <section class="slide slide--title">
+        <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB" />
+        <div class="title-block">
+          <span class="accent-bar"></span>
+          <h1>Questions &amp; discussions</h1>
+        </div>
+        <img
+          class="doodle doodle--questions"
+          src="images/slide20-doodle.webp"
+          alt=""
+          aria-hidden="true"
+        />
+      </section>
+    </main>
+
+    <div class="progress"><div class="progress__bar"></div></div>
+    <div class="counter"></div>
+
+    <script src="script.js"></script>
+    <script src="chessboard.js"></script>
+  </body>
 </html>
