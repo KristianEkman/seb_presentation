@@ -22,6 +22,25 @@
   const glyph = { k: "♚", q: "♛", r: "♜", b: "♝", n: "♞", p: "♟" };
   const backRank = "rnbqkbnr";
 
+  // Dark frame around the board with file (a–h) and rank (1–8) labels
+  const boardFrame = document.createElement("div");
+  boardFrame.className = "board-frame";
+  root.replaceWith(boardFrame);
+  boardFrame.appendChild(root);
+  const files = document.createElement("div");
+  files.className = "board-frame__files";
+  const ranks = document.createElement("div");
+  ranks.className = "board-frame__ranks";
+  for (let i = 0; i < 8; i++) {
+    const f = document.createElement("span");
+    f.textContent = "abcdefgh"[i];
+    files.appendChild(f);
+    const r = document.createElement("span");
+    r.textContent = String(8 - i);
+    ranks.appendChild(r);
+  }
+  boardFrame.append(files, ranks);
+
   // Squares (drawn rank 8 at the top)
   const squareEls = [];
   for (let row = 0; row < 8; row++) {
