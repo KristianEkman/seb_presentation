@@ -1,4 +1,6 @@
 # TODO
+- Test video and sound in Teams
+
 Poll
 ====
 Im a developer: vibe coding is not ok.
