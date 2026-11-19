@@ -1,7 +1,7 @@
 :root {
-  --seb-green: #60cd18;
-  --seb-dark: #0b2e13;
-  --ink: #111;
+  --accent: #d9a441;
+  --seb-dark: #003824;
+  --ink: #003824;
   --muted: #5c5c5c;
   --bg: #ffffff;
   --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
@@ -33,16 +33,15 @@ html, body {
 
 /* Brand mark */
 .brand {
-  font-weight: 800;
-  font-size: clamp(1.4rem, 2.4vw, 2.2rem);
-  letter-spacing: 0.02em;
-  color: var(--ink);
+  display: block;
+  height: clamp(1.4rem, 2.4vw, 2.2rem);
+  width: auto;
 }
 
 /* Title slide */
 .slide--title {
   background:
-    radial-gradient(circle at 100% 100%, var(--seb-green) 0 22vw, transparent 22vw),
+    radial-gradient(circle at 100% 100%, var(--seb-dark) 0 22vw, transparent 22vw),
     var(--bg);
 }
 .title-block {
@@ -53,7 +52,7 @@ html, body {
   display: block;
   width: 6rem;
   height: 0.6rem;
-  background: var(--seb-green);
+  background: var(--accent);
   border-radius: 999px;
   margin-bottom: 2.5rem;
 }
@@ -81,7 +80,7 @@ html, body {
 }
 .progress__bar {
   height: 100%; width: 0;
-  background: var(--seb-green);
+  background: var(--accent);
   transition: width 0.3s ease;
 }
 .counter {
@@ -93,7 +92,7 @@ html, body {
 /* Content slide */
 .slide--content {
   background:
-    linear-gradient(var(--seb-green), var(--seb-green)) left top / 0.6vw 100% no-repeat,
+    linear-gradient(var(--accent), var(--accent)) left top / 0.6vw 100% no-repeat,
     var(--bg);
 }
 .content-block { margin: auto 0; max-width: 75vw; }
@@ -115,7 +114,7 @@ html, body {
   position: absolute; left: 0; top: 0.4em;
   width: 0.9rem; height: 0.9rem;
   border-radius: 50%;
-  background: var(--seb-green);
+  background: var(--accent);
 }
 
 /* Split content slide: text left, diagram right */
@@ -148,14 +147,14 @@ html, body {
 .tree { width: 100%; height: auto; max-height: 70vh; font-family: var(--font); }
 .tree__level text { font-size: 18px; fill: var(--muted); dominant-baseline: middle; }
 .tree__edge { stroke: #b5b5b5; stroke-width: 3; }
-.tree__edge--best { stroke: var(--seb-green); stroke-width: 6; }
+.tree__edge--best { stroke: var(--accent); stroke-width: 6; }
 .tree__edge--pruned { stroke: #d6d6d6; stroke-dasharray: 8 8; }
 .tree__node circle { fill: var(--bg); stroke: var(--ink); stroke-width: 3; }
 .tree__node text {
   font-size: 22px; font-weight: 700; fill: var(--ink);
   text-anchor: middle; dominant-baseline: central;
 }
-.tree__node--best circle { fill: var(--seb-green); stroke: var(--seb-dark); }
+.tree__node--best circle { fill: var(--accent); stroke: var(--seb-dark); }
 .tree__node--pruned circle { stroke: #cfcfcf; stroke-dasharray: 6 6; }
 .tree__node--pruned text { fill: #b0b0b0; }
 .tree__note { font-size: 17px; fill: var(--muted); text-anchor: middle; font-style: italic; }
@@ -173,8 +172,8 @@ html, body {
   background: var(--bg); color: var(--seb-dark);
   cursor: pointer;
 }
-.depth-buttons button:hover { background: #eef3e6; }
-.depth-buttons button.is-active { background: var(--seb-green); border-color: var(--seb-green); }
+.depth-buttons button:hover { background: #e3ebe7; }
+.depth-buttons button.is-active { background: var(--seb-dark); border-color: var(--seb-dark); color: #fff; }
 .node-count {
   margin-top: 1.6rem;
   font-size: clamp(1.4rem, 2.8vw, 2.6rem);
@@ -191,7 +190,7 @@ html, body {
 .growth th:first-child, .growth td:first-child { text-align: left; }
 .growth th { color: var(--muted); font-weight: 600; border-bottom: 2px solid #ddd; }
 .growth tr.is-active td { color: var(--seb-dark); font-weight: 800; }
-.growth tr.is-active td:first-child { box-shadow: inset 4px 0 0 var(--seb-green); padding-left: 0.6em; }
+.growth tr.is-active td:first-child { box-shadow: inset 4px 0 0 var(--accent); padding-left: 0.6em; }
 
 .board {
   position: relative;
@@ -238,7 +237,7 @@ html, body {
   aspect-ratio: 16 / 10;
   border-radius: 8px;
   overflow: hidden;
-  border: 3px solid var(--seb-green);
+  border: 3px solid var(--accent);
   box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
   background: #05080a;
 }
@@ -322,7 +321,7 @@ html, body {
 .stats th, .stats td { padding: 0.3em 2.5em 0.3em 0; text-align: left; }
 .stats th:last-child, .stats td:last-child { text-align: right; padding-right: 0; }
 .stats th { color: var(--muted); font-weight: 600; border-bottom: 2px solid #ddd; }
-.stats tfoot td { font-weight: 800; color: var(--seb-dark); border-top: 2px solid var(--seb-green); }
+.stats tfoot td { font-weight: 800; color: var(--seb-dark); border-top: 2px solid var(--accent); }
 .stats-row { display: flex; align-items: flex-start; gap: clamp(2rem, 5vw, 6rem); }
 .stats-row .stats { font-size: clamp(0.85rem, 1.45vw, 1.4rem); }
 .stats-row .stats th, .stats-row .stats td { padding: 0.25em 1.8em 0.25em 0; }
@@ -345,11 +344,11 @@ html, body {
   font-weight: 700;
   padding-bottom: 0.4em;
   margin-bottom: 0.6em;
-  border-bottom: 2px solid var(--seb-green);
+  border-bottom: 2px solid var(--accent);
 }
 .links__group ul { list-style: none; display: grid; gap: 0.45em; }
 .links__group li { font-size: clamp(1rem, 1.7vw, 1.6rem); }
-.links__group a { color: var(--seb-dark); font-weight: 700; text-decoration: underline; text-underline-offset: 0.15em; text-decoration-color: var(--seb-green); }
+.links__group a { color: var(--seb-dark); font-weight: 700; text-decoration: underline; text-underline-offset: 0.15em; text-decoration-color: var(--accent); }
 .links__group span { color: var(--muted); font-size: 0.8em; margin-left: 0.4em; }
 .links__tools { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 1.5em; }
 
