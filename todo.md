@@ -1,6 +1,5 @@
 # TODO
 
-Make a list of links at the end.
 
 Continue with editing the speaker notes to be more me.
 

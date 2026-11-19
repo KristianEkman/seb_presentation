@@ -329,3 +329,26 @@ html, body {
 .stats-row .stats th:last-child, .stats-row .stats td:last-child { padding-right: 0; }
 .countdown { font-weight: 800; color: var(--seb-dark); font-variant-numeric: tabular-nums; }
 .subtitle--countdown { font-size: clamp(1.6rem, 3.6vw, 3.4rem); text-align: right; }
+
+/* Links slide */
+.links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.2rem, 3.5vh, 2.6rem) clamp(2rem, 5vw, 6rem);
+  margin-top: -0.6rem;
+}
+.links__group h3 {
+  font-size: clamp(0.9rem, 1.3vw, 1.2rem);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  font-weight: 700;
+  padding-bottom: 0.4em;
+  margin-bottom: 0.6em;
+  border-bottom: 2px solid var(--seb-green);
+}
+.links__group ul { list-style: none; display: grid; gap: 0.45em; }
+.links__group li { font-size: clamp(1rem, 1.7vw, 1.6rem); }
+.links__group a { color: var(--seb-dark); font-weight: 700; text-decoration: underline; text-underline-offset: 0.15em; text-decoration-color: var(--seb-green); }
+.links__group span { color: var(--muted); font-size: 0.8em; margin-left: 0.4em; }
+.links__tools { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 1.5em; }
