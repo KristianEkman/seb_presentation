@@ -37,9 +37,9 @@
   // Gameplay videos: click to play/pause, paused and rewound when leaving the slide.
   const videos = Array.from(document.querySelectorAll("[data-video]")).map((el) => {
     const v = el.querySelector("video");
-    const stop = () => { v.pause(); v.currentTime = 0; el.classList.remove("is-playing"); };
+    const stop = () => { v.pause(); v.currentTime = 0; el.classList.remove("is-playing", "has-started"); };
     el.addEventListener("click", () => {
-      if (v.paused) { v.play().then(() => el.classList.add("is-playing")).catch(() => {}); }
+      if (v.paused) { v.play().then(() => el.classList.add("is-playing", "has-started")).catch(() => {}); }
       else { v.pause(); el.classList.remove("is-playing"); }
     });
     v.addEventListener("ended", () => el.classList.remove("is-playing"));
