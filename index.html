@@ -505,6 +505,8 @@
       <!-- Slide 14: Terminal Depth: concept art to 3D model -->
       <section class="slide slide--content">
         <img class="brand" src="images/seb-wordmark-logo.svg" alt="SEB" />
+        <!-- The game's dragon (dragon.js): click it or press D to fly a lap. -->
+        <div class="dragon-stage" data-dragon aria-hidden="true"></div>
         <div class="content-block">
           <span class="accent-bar"></span>
           <h2>From concept art to 3D model</h2>
@@ -929,5 +931,14 @@
 
     <script src="script.js"></script>
     <script src="chessboard.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script type="module" src="dragon.js"></script>
   </body>
 </html>

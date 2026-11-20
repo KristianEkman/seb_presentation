@@ -393,3 +393,7 @@ html, body {
   width: min(37vw, 72vh);
   mix-blend-mode: multiply;
 }
+
+/* Terminal Depth dragon (dragon.js): a transparent 3D layer over the whole slide. */
+.dragon-stage { position: absolute; inset: 0; pointer-events: none; }
+.dragon-stage canvas { display: block; width: 100%; height: 100%; }
